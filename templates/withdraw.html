@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    input{
+        padding:0.5rem 1rem;
+        border:1px solid rgba(229, 231, 235, 1);
+        border-radius: .5rem;
+        width: 100%;
+        margin: 0;
+    }
+    .errorlist{
+        color: red;
+    }
+</style>
+
+<div class="mt-8">
+    <h3 class="text-xl font-semibold text-gray-700 mb-4">Your Withdrawal History</h3>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b text-justify">Date</th>
+                    <th class="py-2 px-4 border-b text-justify">Amount</th>
+                    <th class="py-2 px-4 border-b text-justify">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in withdrawal_requests %}
+                    <tr>
+                        <td class="py-2 px-4 border-b text-gray-600">{{ request.request_date|date:"Y-m-d H:i" }}</td>
+                        <td class="py-2 px-4 border-b text-gray-600">₹{{ request.amount }}</td>
+                        <td class="py-2 px-4 border-b text-gray-600">
+                            {% if request.is_processed %}
+                                <span class="text-green-600">Processed</span>
+                            {% else %}
+                                <span class="text-yellow-600">Pending</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3" class="py-4 text-center text-gray-500">No withdrawal history found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="max-w-md bg-white p-6 rounded shadow-md mt-8">
+    <h2 class="text-2xl font-bold text-gray-700 mb-4">Withdraw Funds</h2>
+    
+    {% if can_withdraw %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="w-full mt-4 px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700">
+                Request Withdrawal
+            </button>
+        </form>
+    {% else %}
+        <p class="text-gray-600">
+            You have an existing withdrawal request for ₹{{ existing_request.amount }} 
+            submitted on {{ existing_request.request_date|date:"Y-m-d" }}. 
+            It will be processed by {{ estimated_processing_time|date:"Y-m-d" }}.
+        </p>
+        <button type="button" class="w-full mt-4 px-4 py-2 text-white bg-gray-400 rounded-lg cursor-not-allowed" disabled>
+            Request Withdrawal (Disabled)
+        </button>
+    {% endif %}
+</div>
+
+
+{% endblock %}
