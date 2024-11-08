@@ -84,19 +84,25 @@ class WithdrawView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Check if the user has an unprocessed withdrawal request
-        existing_request = WithdrawalRequest.objects.filter(
-            user=self.request.user, is_processed=False
-        ).first()
-        context['withdrawal_requests'] = WithdrawalRequest.objects.filter(user=self.request.user).order_by('-request_date')
+        # Retrieve the most recent withdrawal request for the user
+        latest_request = WithdrawalRequest.objects.filter(
+            user=self.request.user
+        ).order_by('-request_date').first()
 
-        # If there's an existing request, add details to the context
-        if existing_request:
-            context['existing_request'] = existing_request
-            context['can_withdraw'] = False  # Disables form in template
-            context['estimated_processing_time'] = existing_request.request_date + timedelta(days=5)
+        # Retrieve all withdrawal requests for the user, ordered by date
+        context['withdrawal_requests'] = WithdrawalRequest.objects.filter(
+            user=self.request.user
+        ).order_by('-request_date')
+
+        # Determine if the user can withdraw based on the latest request's status
+        if latest_request and not latest_request.is_processed and not latest_request.is_rejected:
+            # If there is a pending, non-rejected request, disable withdrawal
+            context['existing_request'] = latest_request
+            context['can_withdraw'] = False
+            context['estimated_processing_time'] = latest_request.request_date + timedelta(days=5)
         else:
-            context['can_withdraw'] = True  # Enables form in template
+            # Enable withdrawal if there are no pending or non-rejected requests
+            context['can_withdraw'] = True
 
         return context
 
@@ -137,7 +143,7 @@ def deposit_request_view(request):
         method = data.get('method')
         amount = data.get('amount', 1000)  # Example default amount, modify as needed
         upi_id = data.get('upi_id')
-        message = f"New Deposit Request:\nMethod: {method}\nUPI ID: {upi_id}\nAmount: ₹{amount}"
+        message = f"New Deposit Request:\nMethod: {method}\nUPI ID: {upi_id}\nAmount: ₹{amount}\nEMAIL: {request.user.email}"
 
         if method == 'UPI':
             upi_id = data.get('upi_id')
