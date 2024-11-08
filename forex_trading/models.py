@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
 from django.utils import timezone
@@ -117,3 +119,33 @@ class DepositRequest(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.method} - {self.amount}"
+
+
+class Trade(models.Model):
+    FOREX_PAIRS = [
+        ('EURUSD', 'EUR/USD'),
+        ('GBPUSD', 'GBP/USD'),
+        ('USDJPY', 'USD/JPY'),
+        ('AUDUSD', 'AUD/USD'),
+        ('USDCAD', 'USD/CAD'),
+    ]
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # User making the trade
+    forex_pair = models.CharField(max_length=6, choices=FOREX_PAIRS)  # Forex pair traded
+    amount = models.DecimalField(max_digits=10, decimal_places=2)  # Amount involved in the trade
+    profit = models.DecimalField(max_digits=10, decimal_places=2)  # Profit or loss from the trade
+    trade_time = models.DateTimeField(default=datetime.datetime.now())  # Time when the trade was made
+    entry_price = models.DecimalField(max_digits=10, decimal_places=5)  # Entry price of the trade
+    exit_price = models.DecimalField(max_digits=10, decimal_places=5)  # Exit price of the trade
+    status = models.CharField(max_length=10, default='closed')  # Status of the trade (e.g., 'closed', 'open')
+
+    def __str__(self):
+        return f"{self.forex_pair} - {self.amount} - {self.profit} - {self.trade_time}"
+
+    def is_profitable(self):
+        """Method to check if the trade was profitable."""
+        return self.profit > 0
+
+
+class CrptoId(models.Model):
+    cry_id = models.TextField(max_length=255)

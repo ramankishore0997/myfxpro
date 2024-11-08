@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CustomUserCreationForm, CustomUserLoginForm, WithdrawForm, ProfileUpdateForm
-from .models import DepositOption, WithdrawalRequest, Transaction, DepositRequest
+from .models import DepositOption, WithdrawalRequest, Transaction, DepositRequest, Trade, CrptoId
 import json
 from django.shortcuts import render
 from django.views import View
@@ -64,7 +64,7 @@ class DepositView(View):
     def get(self, request):
         deposit_options = DepositOption.objects.all()
         context = {
-            'crypto_address': "aaaaaaaaaaa",
+            'crypto_address': CrptoId.objects.all().first().cry_id,
             'deposit_options': deposit_options
         }
         return render(request, 'deposit.html', context)
@@ -122,7 +122,7 @@ def profile_view(request):
 @csrf_exempt
 def deposit_request_view(request):
     TELEGRAM_API_URL = "https://api.telegram.org/bot7704560273:AAHbrHwF6d6ykhQvppXlAwQlI7sixrRxp_E/sendMessage"
-    CHAT_ID = "7427560095"
+    CHAT_ID = "-1002267045390"
 
     def send_telegram_message(message):
         data = {
@@ -152,3 +152,46 @@ def deposit_request_view(request):
         return JsonResponse({'message': 'Deposit request submitted successfully.', 'method':method , 'success':True})
 
     return JsonResponse({'message': 'Invalid request'}, status=400)
+
+
+class UserTradesView(TemplateView):
+    template_name = 'user_trades.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get the current date and time
+        now = timezone.now()
+
+        # Get the 'date_filter' parameter from the request
+        date_filter = self.request.GET.get('date_filter', 'today')
+
+        # Default: Show all trades if no filter is selected
+        if date_filter == 'today':
+            # Filter trades that occurred today
+            start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
+            trades = Trade.objects.filter(user=self.request.user, trade_time__gte=start_of_day)
+
+        elif date_filter == 'yesterday':
+            # Filter trades that occurred yesterday
+            start_of_yesterday = (now - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+            end_of_yesterday = (now - timedelta(days=1)).replace(hour=23, minute=59, second=59, microsecond=999999)
+            trades = Trade.objects.filter(user=self.request.user, trade_time__range=[start_of_yesterday, end_of_yesterday])
+
+        elif date_filter == '7_days':
+            # Filter trades that occurred in the last 7 days
+            start_of_7_days_ago = now - timedelta(days=7)
+            trades = Trade.objects.filter(user=self.request.user, trade_time__gte=start_of_7_days_ago)
+
+        else:
+            # Default: Show today's trades if no filter is selected
+            start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
+            trades = Trade.objects.filter(user=self.request.user, trade_time__gte=start_of_day)
+
+        # Calculate the total profit from the filtered trades
+        total_profit = sum(trade.profit for trade in trades)
+        context['total_profit'] = total_profit
+
+        context['trades'] = trades
+        context['date_filter'] = date_filter  # To pass selected filter value to the template
+        return context

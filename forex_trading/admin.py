@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, DepositOption, WithdrawalRequest, Transaction, DepositRequest
+from .models import CustomUser, DepositOption, WithdrawalRequest, Transaction, DepositRequest, Trade, CrptoId
 
 
 class CustomerUserAdmin(UserAdmin):
@@ -52,4 +52,6 @@ class TransactionAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomerUserAdmin)
 admin.site.register(DepositOption)
 admin.site.register(DepositRequest)
+admin.site.register(Trade)
+admin.site.register(CrptoId)
 
