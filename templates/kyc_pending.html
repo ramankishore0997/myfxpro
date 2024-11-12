@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Status</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
+
+            {% if kyc_status == "approved" %}
+            <!-- Approved Section -->
+            <h2 class="text-2xl font-semibold text-green-600 mb-4">Your KYC is Approved</h2>
+            <p class="text-gray-600 mb-6">Congratulations! Your KYC has been approved. You can now access your account.</p>
+            <svg class="w-16 h-16 mx-auto text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <a href="{% url 'login' %}" class="mt-6 bg-green-500 text-white px-4 py-2 rounded inline-block">Log In</a>
+
+            {% elif kyc_status == "rejected" %}
+            <!-- Rejected Section -->
+            <h2 class="text-2xl font-semibold text-red-600 mb-4">Your KYC is Rejected</h2>
+            <p class="text-gray-600 mb-6">Unfortunately, your KYC submission has been rejected. Please contact the administrator for further assistance.</p>
+            <svg class="w-16 h-16 mx-auto text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+            </svg>
+            <a href="mailto:admin@example.com" class="text-blue-500 underline mt-4 block">Contact Administrator</a>
+
+            {% elif kyc_status == "pending" %}
+            <!-- Under Review Section -->
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Your KYC is Under Review</h2>
+            <p class="text-gray-600 mb-6">Your KYC documents are being reviewed. This may take 24-48 hours. You will be notified once the review is complete.</p>
+            <svg class="w-16 h-16 mx-auto text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+            </svg>
+            <p class="mt-6 text-gray-500">Thank you for your patience!</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+</body>
+</html>

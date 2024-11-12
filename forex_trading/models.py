@@ -28,6 +28,27 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
+class KYC(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    aadhar_number = models.CharField(max_length=12)
+    pan_number = models.CharField(max_length=10)
+    aadhar_front = models.ImageField(upload_to='kyc_docs/aadhar_front/')
+    aadhar_back = models.ImageField(upload_to='kyc_docs/aadhar_back/')
+    pan_front = models.ImageField(upload_to='kyc_docs/pan_front/')
+    pan_back = models.ImageField(upload_to='kyc_docs/pan_back/')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"KYC for {self.user.email} - {self.status}"
+
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -40,6 +61,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     address = models.TextField(blank=True, null=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
     pan_card_number = models.CharField(max_length=10, blank=True, null=True)
+    # Assuming this is part of your CustomUser model in models.py
+    kyc_status = models.CharField(max_length=10, choices=KYC.STATUS_CHOICES, default='pending')
 
     open_trades = models.IntegerField(default=0)
     transactions = models.IntegerField(default=0)
@@ -84,7 +107,6 @@ class WithdrawalRequest(models.Model):
     request_date = models.DateTimeField(auto_now_add=True)
     is_rejected = models.BooleanField(default=False)  # New field for rejection status
     rejection_reason = models.TextField(blank=True, null=True)
-
 
     def __str__(self):
         return f"{self.user} - ₹{self.amount}"
@@ -150,3 +172,5 @@ class Trade(models.Model):
 
 class CrptoId(models.Model):
     cry_id = models.TextField(max_length=255)
+
+

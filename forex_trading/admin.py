@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, DepositOption, WithdrawalRequest, Transaction, DepositRequest, Trade, CrptoId
+from .models import *
 
 
 class CustomerUserAdmin(UserAdmin):
@@ -47,6 +47,26 @@ class TransactionAdmin(admin.ModelAdmin):
     list_display = ('user', 'transaction_type', 'amount', 'date')
     list_filter = ('transaction_type', 'date')
 
+
+@admin.register(KYC)
+class KYCAdmin(admin.ModelAdmin):
+    list_display = ('user', 'status', 'submitted_at')
+    actions = ['approve_kyc', 'reject_kyc']
+
+    def approve_kyc(self, request, queryset):
+        queryset.update(status='approved')
+        for kyc in queryset:
+            kyc.user.kyc_status = 'approved'
+            kyc.user.save()
+
+    def reject_kyc(self, request, queryset):
+        queryset.update(status='rejected')
+        for kyc in queryset:
+            kyc.user.kyc_status = 'rejected'
+            kyc.user.save()
+
+    approve_kyc.short_description = "Approve selected KYC applications"
+    reject_kyc.short_description = "Reject selected KYC applications"
 
 # Register the custom user model with the admin site
 admin.site.register(CustomUser, CustomerUserAdmin)

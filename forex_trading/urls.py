@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.urls import path
 from .views import *
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -18,4 +20,10 @@ urlpatterns = [
     path('deposit/', DepositView.as_view(), name='deposit'),
     path('withdraw/', WithdrawView.as_view(), name='withdraw'),
     path('deposit-request/', deposit_request_view, name='deposit-request'),
+
+    path('kyc-submission/', KYCSubmissionView.as_view(), name='kyc_submission'),
+    path('kyc-pending/', KYCPendingView.as_view(), name='kyc_pending'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

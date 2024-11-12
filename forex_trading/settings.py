@@ -120,3 +120,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # settings.py
 LOGIN_URL = '/login/'
 AUTH_USER_MODEL = 'forex_trading.CustomUser'
+
+# Define the URL that serves the media files
+MEDIA_URL = '/media/'
+
+# Define the absolute path to the media directory
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -9,8 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import CustomUserCreationForm, CustomUserLoginForm, WithdrawForm, ProfileUpdateForm
-from .models import DepositOption, WithdrawalRequest, Transaction, DepositRequest, Trade, CrptoId
+from .forms import CustomUserCreationForm, CustomUserLoginForm, WithdrawForm, ProfileUpdateForm,KYCForm
+from .models import DepositOption, WithdrawalRequest, Transaction, DepositRequest, Trade, CrptoId, KYC
 import json
 from django.shortcuts import render
 from django.views import View
@@ -26,7 +26,7 @@ class HomePage(TemplateView):
 class SignupView(FormView):
     template_name = 'signup.html'
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('kyc_submission')
 
     def form_valid(self, form):
         user = form.save()
@@ -50,9 +50,23 @@ class LoginView(FormView):
         user = authenticate(self.request, email=email, password=password)
         if user is not None:
             login(self.request, user)
-            return super().form_valid(form)
+            # Check if the user has KYC
+            try:
+                user_kyc = user.kyc  # Check if the user has a KYC submission
+            except AttributeError:
+                # If the user has no KYC submission, redirect to the KYC submission page
+                return redirect('kyc_submission')
+
+            if user_kyc.status == 'approved':
+                login(self.request, user)
+                return super().form_valid(form)
+            else:
+                # If KYC is not approved, redirect to the KYC pending page
+                return redirect('kyc_pending')
         else:
             messages.error(self.request, "Invalid email or password.")
+
+
             return self.form_invalid(form)
 
 
@@ -200,4 +214,64 @@ class UserTradesView(TemplateView):
 
         context['trades'] = trades
         context['date_filter'] = date_filter  # To pass selected filter value to the template
+        return context
+
+
+class KYCSubmissionView(View):
+    template_name = 'kyc_submission.html'
+
+    def get(self, request, *args, **kwargs):
+        # Check if the user already has a KYC submission
+        if KYC.objects.filter(user=request.user).exists():
+            messages.error(request, "You have already submitted a KYC request.")
+            return redirect('kyc_pending')  # Redirect to a page showing "KYC under review" or status
+
+        # If no KYC exists, render the KYC form
+        form = KYCForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        # Check if the user already has a KYC submission
+        if KYC.objects.filter(user=request.user).exists():
+            messages.error(request, "You have already submitted a KYC request.")
+            return redirect('kyc_pending')  # Redirect to a page showing "KYC under review" or status
+
+        # If no existing KYC, process the new submission
+        form = KYCForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            # Set the user before saving the form
+            kyc_instance = form.save(commit=False)
+            kyc_instance.user = request.user  # Assign the logged-in user
+            kyc_instance.save()  # Save the form instance
+
+            messages.success(request, "Your KYC submission is under review.")
+            return redirect('kyc_pending')  # Redirect to a page showing "KYC under review"
+        else:
+            # Print errors in the console for debugging
+            print("Form errors:", form.errors)
+
+            # Add form errors as Django messages to display them on the form page
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
+
+            # Re-render the form with errors
+            return render(request, self.template_name, {'form': form})
+
+
+class KYCPendingView(LoginRequiredMixin, TemplateView):
+    template_name = 'kyc_pending.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        # Check if user has a KYC instance and get status
+        if hasattr(user, 'kyc') and user.kyc:
+            context['kyc_status'] = user.kyc.status
+        else:
+            # If no KYC instance exists, redirect to KYC submission page
+            return redirect('kyc_submission')
+
         return context

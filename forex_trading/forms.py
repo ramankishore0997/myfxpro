@@ -1,7 +1,7 @@
 # users/forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser, WithdrawalRequest
+from .models import CustomUser, WithdrawalRequest, KYC
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -55,3 +55,9 @@ class ProfileUpdateForm(forms.ModelForm):
         if phone and not phone.isdigit():
             raise forms.ValidationError("Phone number must contain only digits.")
         return phone
+
+
+class KYCForm(forms.ModelForm):
+    class Meta:
+        model = KYC
+        fields = ['aadhar_number', 'pan_number', 'aadhar_front', 'aadhar_back', 'pan_front', 'pan_back']
