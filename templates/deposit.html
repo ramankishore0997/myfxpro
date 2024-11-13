@@ -83,7 +83,8 @@
         <form id="crypto-form">
             <label class="block text-sm font-medium text-gray-700">USDT Wallet Address</label>
             <!-- Pre-fill the crypto address -->
-            <a href="https://freeimage.host/i/2IaUL1p"><img src="https://iili.io/2IaUL1p.md.jpg" alt="2IaUL1p.md.jpg" border="0"></a><br /><a target='_blank' href='https://freeimage.host/'></a><br />
+            <a href="https://freeimage.host/i/2IaUL1p"><img src="https://iili.io/2IaUL1p.md.jpg" alt="2IaUL1p.md.jpg"
+                    border="0"></a><br /><a target='_blank' href='https://freeimage.host/'></a><br />
             <input type="text" id="crypto-address" name="crypto_address" value="{{ crypto_address }}" readonly
                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
                 disabled>
@@ -107,6 +108,17 @@
                 alert('Please fill out all fields.');
                 return;
             }
+
+            if (amount < 5000) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Minimum Deposit',
+                    text: 'The minimum deposit amount is ₹5000.',
+                    confirmButtonText: 'OK',
+                });
+                return;
+            }
+
             data = { upi_id: upiId, amount: amount, method: 'UPI' };
         } else if (method === 'crypto') {
             const cryptoAddress = document.getElementById('crypto-address').value;
