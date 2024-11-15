@@ -5,13 +5,13 @@ from .models import *
 
 class CustomerUserAdmin(UserAdmin):
     model = CustomUser
-    list_display = ('email', 'balance', 'is_staff', 'is_active')  # Added 'balance' here
+    list_display = ('email', 'balance', 'is_staff', 'is_active', 'token')  # Added 'balance' here
     list_filter = ('is_staff', 'is_active')
     search_fields = ('email',)
     ordering = ('email',)
     fieldsets = (
         (None, {'fields': ('email', 'password', 'balance')}),  # Added 'balance' here
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'open_trades', 'transactions')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'open_trades', 'transactions', 'token', 'is_verified')}),
         ('Important dates', {'fields': ('date_joined',)}),
     )
     add_fieldsets = (

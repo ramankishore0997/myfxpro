@@ -10,13 +10,21 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CustomUserCreationForm, CustomUserLoginForm, WithdrawForm, ProfileUpdateForm,KYCForm
-from .models import DepositOption, WithdrawalRequest, Transaction, DepositRequest, Trade, CrptoId, KYC
+from .models import DepositOption, WithdrawalRequest, Transaction, DepositRequest, Trade, CrptoId, KYC, CustomUser
 import json
 from django.shortcuts import render
 from django.views import View
 from django.views.generic.edit import CreateView
 from django.utils import timezone
 from datetime import timedelta
+from django.core.mail import send_mail, EmailMessage
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.contrib.auth.tokens import default_token_generator
+from .settings import EMAIL_HOST_USER
 
 
 class HomePage(TemplateView):
@@ -30,6 +38,8 @@ class SignupView(FormView):
 
     def form_valid(self, form):
         user = form.save()
+        # Send email verification in background
+        self.send_verification_email(user)
         login(self.request, user)
         return super().form_valid(form)
 
@@ -37,6 +47,29 @@ class SignupView(FormView):
         # Optionally, you can add a message here for form submission failure
         messages.error(self.request, "Please correct the errors below.")
         return super().form_invalid(form)
+
+    def send_verification_email(self, user):
+        current_site = get_current_site(self.request)
+        mail_subject = 'Verify your email address'
+
+        # UID encoding and token generation
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)  # Use the default token generator
+
+        # Log the UID and token for debugging
+        print(f"UID: {uid}")
+        print(f"Token: {token}")
+
+        verification_link = f"{self.request.scheme}://{current_site.domain}{reverse('email_verify', kwargs={'uidb64': uid, 'token': token})}"
+        message = render_to_string('email_verification_email.html', {
+            'user': user,
+            'verification_link': verification_link,
+        })
+
+        mail = EmailMessage(subject=mail_subject, body=message, from_email=EMAIL_HOST_USER, to=[user.email])
+        mail.send()
+        user.token = token
+        user.save()
 
 
 class LoginView(FormView):
@@ -66,9 +99,32 @@ class LoginView(FormView):
         else:
             messages.error(self.request, "Invalid email or password.")
 
-
             return self.form_invalid(form)
 
+
+def verify_email(request, uidb64, token):
+    try:
+        # Decode the UID from the URL
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = CustomUser.objects.get(pk=uid)
+
+        # Debugging logs for UID and token
+        print(f"Decoded UID: {uid}")
+        print(f"Received Token: {token}")
+
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    # Check if the user exists and the token is valid
+    if user is not None and user.token == token:
+        user.is_verified = True
+        user.save()
+        messages.success(request, 'Your email has been verified.')
+        return redirect('dashboard')
+    else:
+        # Invalid or expired token
+        messages.error(request, 'Verification link is invalid or expired!')
+        return redirect('signup')
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'

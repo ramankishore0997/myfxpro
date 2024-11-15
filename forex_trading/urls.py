@@ -23,6 +23,7 @@ urlpatterns = [
 
     path('kyc-submission/', KYCSubmissionView.as_view(), name='kyc_submission'),
     path('kyc-pending/', KYCPendingView.as_view(), name='kyc_pending'),
+    path('verify-email/<uidb64>/<token>/', verify_email, name='email_verify'),
 ]
 
 if settings.DEBUG:

@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django.contrib.auth.tokens import default_token_generator
 
 
 class CustomUserManager(BaseUserManager):
@@ -66,6 +67,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     open_trades = models.IntegerField(default=0)
     transactions = models.IntegerField(default=0)
+
+    # Email Verification
+    is_verified = models.BooleanField(default=False)
+    token = models.TextField(null=True, blank=True)
 
     # Specify related_name to avoid conflict with auth.User model
     groups = models.ManyToManyField(

@@ -7,7 +7,14 @@
 <!-- Main Content -->
 <div class="flex-1">
 
+    {% if request.user.is_authenticated and not request.user.is_verified %}
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4">
+                <p>Please verify your email to access full features of the website. Check your inbox for the verification email.</p>
+            </div>
+        {% endif %}
+        
     <div class="px-6 py-8 rounded-lg mt-2">
+        
         <div class="flex items-center justify-between">
           <div>
             <h2 class="text-3xl font-bold text-gray-800">Welcome, <span class="text-blue-500">{{ user.email }}</span></h2>

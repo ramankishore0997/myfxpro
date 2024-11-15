@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-q=6-^lxsj=4hph@82b3_5aeoo=a%z(bp9yqx-$o_vb-c9sb(r&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cc66-2a09-bac1-36a0-5d68-00-3b7-1d.ngrok-free.app', '127.0.0.1']
 
 
 # Application definition
@@ -126,3 +126,13 @@ MEDIA_URL = '/media/'
 
 # Define the absolute path to the media directory
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Email Backend Configuration for Zoho Mail
+EMAIL_BACKEND = 'forex_trading.backends.email_backend.EmailBackend'
+EMAIL_HOST = 'smtp.zoho.in'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSl = False
+EMAIL_HOST_USER = 'myfxpro@zohomail.in'
+EMAIL_HOST_PASSWORD = 'r5572Na9P7ix'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
