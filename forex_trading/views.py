@@ -67,6 +67,7 @@ class SignupView(FormView):
         })
 
         mail = EmailMessage(subject=mail_subject, body=message, from_email=EMAIL_HOST_USER, to=[user.email])
+        mail.content_subtype = 'html'
         mail.send()
         user.token = token
         user.save()
@@ -125,6 +126,34 @@ def verify_email(request, uidb64, token):
         # Invalid or expired token
         messages.error(request, 'Verification link is invalid or expired!')
         return redirect('signup')
+
+
+def resend_verify_email(request):
+    user = request.user
+    current_site = get_current_site(request)
+    mail_subject = 'Verify your email address'
+
+    # UID encoding and token generation
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    token = default_token_generator.make_token(user)  # Use the default token generator
+
+    # Log the UID and token for debugging
+    print(f"UID: {uid}")
+    print(f"Token: {token}")
+
+    verification_link = f"{request.scheme}://{current_site.domain}{reverse('email_verify', kwargs={'uidb64': uid, 'token': token})}"
+    message = render_to_string('email_verification_email.html', {
+        'user': user,
+        'verification_link': verification_link,
+    })
+
+    mail = EmailMessage(subject=mail_subject, body=message, from_email=EMAIL_HOST_USER, to=[user.email])
+    mail.content_subtype = 'html'
+    mail.send()
+    user.token = token
+    user.save()
+    return redirect('dashboard')
+
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
