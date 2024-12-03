@@ -11,7 +11,7 @@ class CustomerUserAdmin(UserAdmin):
     ordering = ('email',)
     fieldsets = (
         (None, {'fields': ('email', 'password', 'balance')}),  # Added 'balance' here
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'open_trades', 'transactions', 'token', 'is_verified')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'trade_group', 'user_permissions', 'open_trades', 'transactions', 'token', 'is_verified')}),
         ('Important dates', {'fields': ('date_joined',)}),
     )
     add_fieldsets = (
@@ -74,4 +74,5 @@ admin.site.register(DepositOption)
 admin.site.register(DepositRequest)
 admin.site.register(Trade)
 admin.site.register(CrptoId)
+admin.site.register(TradeGroup)
 

@@ -270,23 +270,26 @@ class UserTradesView(TemplateView):
 
         # Get the 'date_filter' parameter from the request
         date_filter = self.request.GET.get('date_filter', 'today')
-
+        print("Trade user group ", self.request.user.trade_group.all()[0])
         # Default: Show all trades if no filter is selected
         if date_filter == 'today':
             # Filter trades that occurred today
             start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
-            trades = Trade.objects.filter(user=self.request.user, trade_time__gte=start_of_day)
+            # trades = Trade.objects.filter(user=self.request.user, trade_time__gte=start_of_day)
+            trades = Trade.objects.filter(trade_time__gte=start_of_day, trade_group__in=self.request.user.trade_group.all())
 
         elif date_filter == 'yesterday':
             # Filter trades that occurred yesterday
             start_of_yesterday = (now - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
             end_of_yesterday = (now - timedelta(days=1)).replace(hour=23, minute=59, second=59, microsecond=999999)
-            trades = Trade.objects.filter(user=self.request.user, trade_time__range=[start_of_yesterday, end_of_yesterday])
+            # trades = Trade.objects.filter(user=self.request.user, trade_time__range=[start_of_yesterday, end_of_yesterday])
+            trades = Trade.objects.filter(trade_group__in=self.request.user.trade_group.all(), trade_time__range=[start_of_yesterday, end_of_yesterday])
 
         elif date_filter == '7_days':
             # Filter trades that occurred in the last 7 days
             start_of_7_days_ago = now - timedelta(days=7)
-            trades = Trade.objects.filter(user=self.request.user, trade_time__gte=start_of_7_days_ago)
+            # trades = Trade.objects.filter(user=self.request.user, trade_time__gte=start_of_7_days_ago)
+            trades = Trade.objects.filter(trade_group__in=self.request.user.trade_group.all(), user=self.request.user, trade_time__gte=start_of_7_days_ago)
 
         else:
             # Default: Show today's trades if no filter is selected

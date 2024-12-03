@@ -72,6 +72,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_verified = models.BooleanField(default=False)
     token = models.TextField(null=True, blank=True)
 
+    trade_group = models.ManyToManyField('TradeGroup')
+
+
     # Specify related_name to avoid conflict with auth.User model
     groups = models.ManyToManyField(
         Group,
@@ -166,6 +169,7 @@ class Trade(models.Model):
     entry_price = models.DecimalField(max_digits=10, decimal_places=5)  # Entry price of the trade
     exit_price = models.DecimalField(max_digits=10, decimal_places=5)  # Exit price of the trade
     status = models.CharField(max_length=10, default='closed')  # Status of the trade (e.g., 'closed', 'open')
+    trade_group = models.ManyToManyField('TradeGroup')
 
     def __str__(self):
         return f"{self.forex_pair} - {self.amount} - {self.profit} - {self.trade_time}"
@@ -179,3 +183,8 @@ class CrptoId(models.Model):
     cry_id = models.TextField(max_length=255)
 
 
+class TradeGroup(models.Model):
+    group_range = models.BigIntegerField(default=0)
+
+    def __str__(self):
+        return str(self.group_range)
