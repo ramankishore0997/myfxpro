@@ -337,14 +337,9 @@ class KYCSubmissionView(View):
             return redirect('kyc_pending')  # Redirect to a page showing "KYC under review"
         else:
             # Print errors in the console for debugging
-            print("Form errors:", form.errors)
-
-            # Add form errors as Django messages to display them on the form page
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field.capitalize()}: {error}")
-
-            # Re-render the form with errors
+            print(f"Form errors: {form.errors}")
+            
+            # Do NOT redirect - just return the rendered template with the form that has errors
             return render(request, self.template_name, {'form': form})
 
 

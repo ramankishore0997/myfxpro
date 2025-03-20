@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-q=6-^lxsj=4hph@82b3_5aeoo=a%z(bp9yqx-$o_vb-c9sb(r&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cc66-2a09-bac1-36a0-5d68-00-3b7-1d.ngrok-free.app', '127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -65,13 +65,9 @@ WSGI_APPLICATION = 'forex_trading.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'forex2'),
-        'SCHEMA': os.environ.get('DB_SCHEMA', 'forex2'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', '#1qwerty'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),  # Default to localhost
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR/ 'db.sqlite3',
+        
     }
 }
 
