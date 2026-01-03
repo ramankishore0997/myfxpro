@@ -1,0 +1,57 @@
+{% load static %}
+<div class="flex h-screen">
+  <!-- Sidebar -->
+  <div class="bg-gray-800 text-white w-64 hidden md:block">
+    <div class="p-6 flex justify-between items-center border-b border-gray-700">
+      <h2 class="text-2xl font-bold">
+        <img src="{% static 'landingpage/images/MyFxPro.png' %}" alt="" class="w-1/2 mx-auto">
+      </h2>
+      <!-- <button id="toggle-sidebar" class="md:hidden p-2 text-gray-600 bg-gray-200 rounded">
+        ☰
+      </button> -->
+    </div>
+    <nav class="mt-6">
+      <a href="{% url 'dashboard' %}" class="flex items-center px-6 py-4 mb-2 hover:bg-gray-700 transition duration-200">
+        <i class="fas fa-tachometer-alt w-5 h-5 mr-3"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="{% url 'deposit' %}" class="flex items-center px-6 py-4 mb-2 hover:bg-gray-700 transition duration-200">
+        <i class="fas fa-plus-circle w-5 h-5 mr-3"></i>
+        <span>Deposit</span>
+      </a>
+      <a href="{% url 'withdraw' %}" class="flex items-center px-6 py-4 mb-2 hover:bg-gray-700 transition duration-200">
+        <i class="fas fa-minus-circle w-5 h-5 mr-3"></i>
+        <span>Withdraw</span>
+      </a>
+      <a href="{% url 'profile' %}" class="flex items-center px-6 py-4 mb-2 hover:bg-gray-700 transition duration-200">
+        <i class="fas fa-user w-5 h-5 mr-3"></i>
+        <span>Profile</span>
+      </a>
+      <!-- Add Trades Link -->
+      <a href="{% url 'user_trades' %}" class="flex items-center px-6 py-4 mb-2 hover:bg-gray-700 transition duration-200">
+        <i class="fas fa-chart-line w-5 h-5 mr-3"></i>
+        <span>Trades</span>
+      </a>
+      <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="flex items-center px-6 py-4 mb-2 hover:bg-gray-700 transition duration-200">
+            <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
+            <span>Logout</span>
+        </button>
+      </form>
+    </nav>
+  </div>
+  
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.bg-gray-800');
+  const toggleButtons = document.querySelectorAll('#toggle-sidebar');
+
+  toggleButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+    });
+  });
+});
+</script>

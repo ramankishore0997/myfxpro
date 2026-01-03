@@ -1,0 +1,52 @@
+<!-- user_trades.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-semibold">Your Trades</h1>
+            <div class="text-lg font-medium">
+                <span>Total Profit: </span>
+                <span class="font-bold {% if total_profit > 0 %}text-green-500{% else %}text-red-500{% endif %}">
+                    {{ total_profit }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Filter Trades by Date -->
+        <div class="mb-4">
+            <label for="date_filter" class="mr-2">Filter by Date:</label>
+            <select id="date_filter" class="border px-2 py-1 rounded" onchange="location = this.value;">
+                <option value="?date_filter=today" {% if date_filter == 'today' %}selected{% endif %}>Today's Trades</option>
+                <option value="?date_filter=yesterday" {% if date_filter == 'yesterday' %}selected{% endif %}>Yesterday's Trades</option>
+                <option value="?date_filter=7_days" {% if date_filter == '7_days' %}selected{% endif %}>Last 7 Days' Trades</option>
+            </select>
+        </div>
+
+        <!-- Check if there are any trades -->
+        {% if trades %}
+            <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b text-left">Currency Pair</th>
+                        <th class="py-2 px-4 border-b text-left">Trade Time</th>
+                        <th class="py-2 px-4 border-b text-left">Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trade in trades %}
+                        <tr>
+                            <td class="py-2 px-4 border-b">{{ trade.forex_pair }}</td>
+                            <td class="py-2 px-4 border-b">{{ trade.trade_time }}</td>
+                            <td class="py-2 px-4 border-b {% if trade.profit > 0 %}text-green-500{% else %}text-red-500{% endif %}">
+                                {{ trade.profit }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No trades found.</p>
+        {% endif %}
+    </div>
+{% endblock %}

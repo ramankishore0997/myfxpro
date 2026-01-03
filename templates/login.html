@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1503914068268-5413b35b45ad?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+        }
+        .logo {
+            animation: bounce 1s infinite;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-lg p-8 glass rounded-lg shadow-2xl transform transition duration-500 hover:scale-105">
+        <h2 class="mb-6 text-4xl font-bold text-center text-black" >Login to Your Account</h2>
+
+        <!-- Displaying any form errors -->
+        {% if form.non_field_errors %}
+            <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-5">
+                <label for="email" class="block mb-2 text-sm font-medium text-white">Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="text-sm text-red-600 mt-1">
+                        {{ form.email.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-5">
+                <label for="password" class="block mb-2 text-sm font-medium text-white">Password</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="text-sm text-red-600 mt-1">
+                        {{ form.password.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="w-full py-2 mt-4 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 focus:outline-none transition duration-300 transform hover:scale-105">
+                Login
+            </button>
+        </form>
+
+        <!-- Redirect to Signup Link -->
+        <p class="mt-6 text-center text-black">
+            Don’t have an account?
+            <a href="{% url 'signup' %}" class="text-indigo-300 hover:text-indigo-500 font-medium transition duration-300 hover:underline">
+                Sign Up
+            </a>
+        </p>
+    </div>
+</body>
+</html>

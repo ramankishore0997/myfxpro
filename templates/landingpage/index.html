@@ -1,0 +1,623 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from profit.websitelayout.net/html/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 20 Mar 2025 14:16:28 GMT -->
+<head>
+
+    <!-- Title  -->
+    <title>Profit - Investment and Stock Broker MyFxPro</title>
+
+    <!-- Metas -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Profit - Investment and Stock Broker MyFxPro">
+    <meta name="author" content="MyFxPro">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://profit.websitelayout.net/html/assets/img/favicon.ico">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+
+    <!-- Libs CSS -->
+    <link rel="stylesheet" href="https://profit.websitelayout.net/html/assets/libs/font-awesome/css/fontawesome-all.css">
+    <link rel="stylesheet" href="https://profit.websitelayout.net/html/assets/libs/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="https://profit.websitelayout.net/html/assets/libs/owl-carousel/dist/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://profit.websitelayout.net/html/assets/libs/owl-carousel/dist/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="https://profit.websitelayout.net/html/assets/libs/jarallax/dist/jarallax.css">
+
+    <!-- Theme CSS -->
+    <link href="https://profit.websitelayout.net/html/assets/css/theme.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- PAGE LOADING
+    ================================================== -->
+    <div id="preloader"></div>
+
+    <!-- MAIN WRAPPER
+    ================================================== -->
+    <div class="main-wrapper">
+
+        <!-- HEADER
+        ================================================== -->
+        <header>
+
+            <div class="container">
+
+                <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+
+                    <!-- Brand -->
+                    <a class="navbar-brand me-lg-5" href="">
+                        <img src="{% static 'landingpage/images/MyFxPro.png' %}" alt="...">
+                    </a>
+                    <!-- End Brand -->
+
+                    <!-- Toggler -->
+                    <button type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                 
+                    <!-- End Toggler -->
+
+                    <!-- Collaps -->
+                    <div id="navbarContent" class="collapse navbar-collapse">
+
+                        <!-- Navigation -->
+                        <ul class="navbar-nav align-items-lg-center ms-auto">
+
+                            <!-- <li class="nav-item dropdown">
+                                <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle">Home</a>
+                                <ul class="dropdown-menu shadow">
+                                    <li><a href="https://profit.websitelayout.net/html/index.html" class="dropdown-item">Home 1</a></li>
+                                    <li><a href="https://profit.websitelayout.net/html/index-2.html" class="dropdown-item">Home 2</a></li>
+                                    <li><a href="https://profit.websitelayout.net/html/index-3.html" class="dropdown-item">Home 3</a></li>
+                                    <li><a href="https://profit.websitelayout.net/html/index-4.html" class="dropdown-item">Home 4</a></li>
+                                </ul>
+                            </li> -->
+                            
+                            <li class="nav-item"><a class="nav-link" href="">Markets</a></li>
+                            <li class="nav-item dropdown">
+                                <a href="#" data-bs-toggle="dropdown" class="nav-link ">Company</a>
+                                <ul class="dropdown-menu shadow">
+                                    <li><a href="" class="dropdown-item">About</a></li>
+                                    <li><a href="" class="dropdown-item">Blog</a></li>
+                                    <li><a href="" class="dropdown-item">Blog Article</a></li>
+                                    <li><a href="" class="dropdown-item">Careers</a></li>
+                                    <li><a href="" class="dropdown-item">Contact</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item"><a class="nav-link" href="">Education</a></li>
+                            <li class="nav-item"  style="margin-left: 1rem;"><a class="nav-link btn btn-sm d-lg-inline-block btn-primary ms-auto text-white" href="{% url 'login' %}" style="color: white !important;">Login</a></li>
+                            <li class="nav-item" style="margin-left: 1rem;"><a style="margin-left: 1rem;" class="nav-link btn btn-sm d-lg-inline-block btn-primary ms-auto text-white" href="{% url 'signup' %}" style="color: white !important;">Register</a></li>
+
+                            <!-- <li class="nav-item dropdown">
+                                <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle">Resources</a>
+                                <ul class="dropdown-menu shadow">
+                                    <li><a href="https://profit.websitelayout.net/html/help-center-home.html" class="dropdown-item">Help Center</a></li>
+                                    <li><a href="https://profit.websitelayout.net/html/customers.html" class="dropdown-item">Customers</a></li>
+                                    <li><a href="https://profit.websitelayout.net/html/legal-docs.html" class="dropdown-item">Legal Docs</a></li>
+                                </ul>
+                            </li> -->
+
+                        </ul>
+
+                        <ul class="navbar-nav align-items-lg-center ms-lg-auto">
+                            <li class="nav-item dropdown">
+                                <!-- <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle">Docs</a> -->
+                                <ul class="dropdown-menu shadow pt-2 pb-0 py-lg-3">
+                                    <li>
+                                        <a href="" class="dropdown-item">
+                                            <div class="d-flex border-bottom border-light pb-3">
+                                                <img class="feather display-6" src="https://profit.websitelayout.net/html/assets/img/svg/file-text.svg" alt="...">
+                                                <div class="ms-3">
+                                                    <h6 class="mb-0">Documentation</h6>
+                                                    <p class="small mb-0">Customizing and building</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="" class="dropdown-item">
+                                            <div class="d-flex border-bottom border-light pt-2 pb-3 pt-lg-1">
+                                                <img class="feather display-6" src="https://profit.websitelayout.net/html/assets/img/svg/grid.svg" alt="...">
+                                                <div class="ms-3">
+                                                    <h6 class="mb-0">Components</h6>
+                                                    <p class="small mb-0">Components and more</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="mailto:myfxpro@proton.me" class="dropdown-item">
+                                            <div class="d-flex pt-2 pt-lg-0">
+                                                <img class="feather display-6" src="https://profit.websitelayout.net/html/assets/img/svg/help-circle.svg" alt="...">
+                                                <div class="ms-3">
+                                                    <h6 class="mb-0">Support</h6>
+                                                    <p class="small mb-0">chitrakootweb@gmail.com</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                     
+
+                        </ul>
+                        <!-- End Navigation -->
+
+                    </div>
+                    <!-- End Collaps -->
+
+                </nav>
+
+            </div>
+
+        </header>
+
+        <!-- BANNER
+        ================================================== -->
+        <div class="main-slider">
+
+            <div class="container-fluid px-0">
+                <!-- Slider -->
+                <div class="owl-carousel owl-theme h-100">
+                    <div class="item py-24 overlay overlay-black overlay-70 bg-cover" style="background-image: url(https://profit.websitelayout.net/html/assets/img/banner/slide-01.jpg);">
+                        <div class="container py-4 py-md-6 py-lg-10">
+                            <div class="position-absolute translate-middle-y w-100">
+                                <div class="row w-100">
+                                    <div class="col-sm-11 col-md-9 col-lg-7">
+                                        <h1 class="mb-3 text-white display-5 fw-bold">We provide professional market infrastructure</h1>
+                                        <p class="text-white-90 mb-4 lead">Tap into the world's business sectors and investigate perpetual exchanging openings with tight spreads and no commission.</p>
+                                        <!-- <a href="#" class="btn btn-primary">Read More</a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item py-24 overlay overlay-black overlay-70 bg-cover" style="background-image: url(https://profit.websitelayout.net/html/assets/img/banner/slide-02.jpg);">
+                        <div class="container py-4 py-md-6 py-lg-10">
+                            <div class="position-absolute translate-middle-y w-100">
+                                <div class="row w-100">
+                                    <div class="col-sm-11 col-md-9 col-lg-7">
+                                        <h1 class="mb-3 text-white display-5 fw-bold">Start trading the world's most popular <span class="text-uppercase">Profit</span></h1>
+                                        <p class="text-white-90 mb-4 lead">Tap into the world's business sectors and investigate perpetual exchanging openings with tight spreads and no commission.</p>
+                                        <!-- <a href="#" class="btn btn-primary">Read More</a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item py-24 overlay overlay-black overlay-70 bg-cover" style="background-image: url(https://profit.websitelayout.net/html/assets/img/banner/slide-03.jpg);">
+                        <div class="container py-4 py-md-6 py-lg-10">
+                            <div class="position-absolute translate-middle-y w-100">
+                                <div class="row w-100">
+                                    <div class="col-sm-11 col-md-9 col-lg-7">
+                                        <h1 class="mb-3 text-white display-5 fw-bold">Find and compare the best exchange rates</h1>
+                                        <p class="text-white-90 mb-4 lead">Tap into the world's business sectors and investigate perpetual exchanging openings with tight spreads and no commission.</p>
+                                        <!-- <a href="#" class="btn btn-primary">Read More</a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- EXTRA
+        ================================================== -->
+        <section class="py-4 bg-dark">
+            <div class="container-fluid">
+                <div class="owl-carousel owl-theme markets text-center">
+                    <div>
+                        <span class="text-white small">Walmart Inc (WMT)</span>
+                        <span class="badge bg-success ms-2"><i class="fas fa-caret-up me-2"></i> 1,740.05</span>
+                    </div>
+
+                    <div>
+                        <span class="text-white small">Chevron Corp (CVX)</span>
+                        <span class="badge bg-success ms-2"><i class="fas fa-caret-up me-2"></i> 217.90</span>
+                    </div>
+
+                    <div>
+                        <span class="text-white small">Alphabet Inc (GOOGL)</span>
+                        <span class="badge bg-danger ms-2"><i class="fas fa-caret-down me-2"></i> 270.97</span>
+                    </div>
+
+                    <div>
+                        <span class="text-white small">Microsoft Corp (MSFT)</span>
+                        <span class="badge bg-success ms-2"><i class="fas fa-caret-up me-2"></i> 3,218.51</span>
+                    </div>
+
+                    <div>
+                        <span class="text-white small">General Motors (GM)</span>
+                        <span class="badge bg-danger ms-2"><i class="fas fa-caret-down me-2"></i> 735.11</span>
+                    </div>
+
+                    <div>
+                        <span class="text-white small">Apple Inc (AAPL)</span>
+                        <span class="badge bg-success ms-2"><i class="fas fa-caret-up me-2"></i> 1,740.05</span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES
+        ================================================== -->
+        <section>
+            <div class="container">
+                <div class="row text-center border-bottom pb-6">
+                    <div class="col-md-6 col-lg-4 mb-5 mb-lg-0">
+                        <div>
+                            <span class="service-icon mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-layers injected-svg feather display-6 text-white"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                            </span>
+                            <h3 class="h5"><a href="#">0% commissions</a></h3>
+                            <p class="mb-0">The free delivery trading plan and brokerage free trading in the delivery segment.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-5 mb-lg-0">
+                        <div>
+                            <span class="service-icon mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-minimize injected-svg feather display-6 text-white"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>
+                            </span>
+                            <h3 class="h5"><a href="#">One app for all</a></h3>
+                            <p class="mb-0">You can track the latest updates on global financial markets with the our app.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div>
+                            <span class="service-icon mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-dollar-sign injected-svg feather display-6 text-white"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            </span>
+                            <h3 class="h5"><a href="#">Trade from anywhere</a></h3>
+                            <p class="mb-0">We provide world’s largest exchanges, you can trade from anywhere.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-6">
+                    <div class="text-center">
+                        <span class="border py-2 ps-3 pe-2 align-middle rounded small d-inline-block">Dont see a fee strategies that works for you? We produce other options. <a href="#" class="btn btn-xs btn-primary mt-2 mt-sm-0 ms-sm-3">More Options</a></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES
+        ================================================== -->
+        <section class="bg-light">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-6 mb-5 mb-lg-0">
+                        <div class="position-relative pe-lg-5 text-center">
+                            <img src="https://profit.websitelayout.net/html/assets/img/content/about-02.jpg" class="rounded" alt="...">
+                            <div class="d-inline-block align-middle position-absolute top-50 start-50 translate-middle">
+                                <a class="popup-social-video video video-btn small" href="https://www.youtube.com/watch?v=C3KRwfj9F8Q">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-play injected-svg feather text-white"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-lg-6">
+                        <h2 class="h3">Most widely recognized path for all to acquire investment experience.</h2>
+                        <p class="mb-5">Gain a more exhaustive arrangement and upgrade your examination of retailers, markets, channels and classes execution.</p>
+                        <div class="row">
+                            <div class="col-sm-4 mb-3 mb-sm-0">
+                                <div class="border bg-white p-4 text-center rounded h-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-briefcase injected-svg feather display-6 mb-3"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                                    <h3 class="mb-0 h6">Various assets</h3>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 mb-3 mb-sm-0">
+                                <div class="border bg-white p-4 text-center rounded h-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-cloud-drizzle injected-svg feather display-6 mb-3"><line x1="8" y1="19" x2="8" y2="21"></line><line x1="8" y1="13" x2="8" y2="15"></line><line x1="16" y1="19" x2="16" y2="21"></line><line x1="16" y1="13" x2="16" y2="15"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="12" y1="15" x2="12" y2="17"></line><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path></svg>
+                                    <h3 class="mb-0 h6">Market analysis</h3>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="border bg-white p-4 text-center rounded h-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-edit injected-svg feather display-6 mb-3"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                    <h3 class="mb-0 h6">Enhanced tools</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAYMENT AND PROCESS
+        ================================================== -->
+        <section>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="border rounded profit-process position-relative p-5 pt-7 text-center">
+                            <h5 class="position-absolute bg-white text-primary h6 mb-0 start-50 translate-middle-x">How Profit Works</h5>
+                            <div class="row">
+                                <div class="col-sm-4 mb-4 mb-sm-0">
+                                    <div class="process-block position-relative">
+                                        <div class="process-icon mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-user injected-svg feather display-7"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                        </div>
+                                        <h3 class="mb-0 h6">Create Account</h3>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 mb-4 mb-sm-0">
+                                    <div class="process-block position-relative">
+                                        <div class="process-icon mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-dollar-sign injected-svg feather display-7"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                        </div>
+                                        <h3 class="mb-0 h6">Invest To Plan</h3>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="process-block no-line position-relative">
+                                        <div class="process-icon mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-pocket injected-svg feather display-7"><path d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z"></path><polyline points="8 10 12 14 16 10"></polyline></svg>
+                                        </div>
+                                        <h3 class="mb-0 h6">Get Profit</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mt-8">
+                    <div class="col-lg-3 mb-4 mb-lg-0">
+                        <h3 class="h5 mb-0">Funding &amp; withdrawals</h3>
+                        <p class="mb-0">No deposit fee*</p>
+                    </div>
+                    <div class="col-lg-9 border-lg-left">
+                        <div class="row align-items-center text-center payment-img">
+                            <div class="col-4 col-sm-2 mb-4 mb-sm-0">
+                                <img src="assets/img/content/payment-01.png" alt="...">
+                            </div>
+                            <div class="col-4 col-sm-2 mb-4 mb-sm-0">
+                                <img src="assets/img/content/payment-02.png" alt="...">
+                            </div>
+                            <div class="col-4 col-sm-2 mb-4 mb-sm-0">
+                                <img src="assets/img/content/payment-03.png" alt="...">
+                            </div>
+                            <div class="col-4 col-sm-2">
+                                <img src="assets/img/content/payment-04.png" alt="...">
+                            </div>
+                            <div class="col-4 col-sm-2">
+                                <img src="assets/img/content/payment-05.png" alt="...">
+                            </div>
+                            <div class="col-4 col-sm-2">
+                                <img src="assets/img/content/payment-06.png" alt="...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PLATFORMS
+        ================================================== -->
+        <section class="pt-8 pb-0 jarallax bg-cover overlay overlay-white overlay-80" data-speed="1">
+
+            <div class="jarallax-img bg-cover" style="background-image: url(https://profit.websitelayout.net/html/assets/img/banner/bg-1.jpg);"></div>
+
+            <div class="container">
+                <div class="row align-items-end justify-content-center">
+                    <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
+                        <div>
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <i class="fab fa-windows text-primary display-6 mb-2"></i>
+                                    <h3 class="mb-0 h6">Windows</h3>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fab fa-apple text-primary display-6 mb-2"></i>
+                                    <h3 class="mb-0 h6">MacOS</h3>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fab fa-google-play text-primary display-6 mb-2"></i>
+                                    <h3 class="mb-0 h6">Android</h3>
+                                </div>
+                            </div>
+                            <div class="bg-white p-5 mt-4">
+                                <h2 class="mb-4 h5">Take available with our powerful platforms.</h2>
+                                <p class="mb-0">There are different stages accessible nowadays that are not difficult to information exchange for and start with your venture.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-5">
+                        <div class="position-relative ps-lg-5">
+                            <img src="https://profit.websitelayout.net/html/assets/img/content/app-02.png" alt="...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOG
+        ================================================== -->
+        <section>
+            <div class="container">
+                <h2 class="h3 mb-5 text-center">Stay ahead of the curved.</h2>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 mb-5 mb-md-0">
+                        <article>
+                            <img src="https://profit.websitelayout.net/html/assets/img/blog/blog-04.jpg" class="rounded mb-4" alt="...">
+                            <small class="mb-1 d-block">By Aroob Taima <span class="ms-4">Apr. 17 2021</span></small>
+                            <h3 class="h5 mb-3"><a href="#">This story behind investment will haunt you forever!</a></h3>
+                            <p class="w-lg-90">Smooth to apprehend records on non-public finance that targets to assist human beings make clever economic decisions.</p>
+                            <a href="#" class="small">Read More</a>
+                        </article>
+                    </div>
+                    <div class="col-sm-6 col-md-4 mb-5 mb-md-0">
+                        <article>
+                            <img src="https://profit.websitelayout.net/html/assets/img/blog/blog-05.jpg" class="rounded mb-4" alt="...">
+                            <small class="mb-1 d-block">By Luiza Barbosa <span class="ms-4">Apr. 14 2021</span></small>
+                            <h3 class="h5 mb-3"><a href="#">10 investment that will actually make your life better.</a></h3>
+                            <p class="w-lg-90">Smooth to apprehend records on non-public finance that targets to assist human beings make clever economic decisions.</p>
+                            <a href="#" class="small">Read More</a>
+                        </article>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <article>
+                            <img src="https://profit.websitelayout.net/html/assets/img/blog/blog-06.jpg" class="rounded mb-4" alt="...">
+                            <small class="mb-1 d-block">By Paulo Araujo <span class="ms-4">Apr. 12 2021</span></small>
+                            <h3 class="h5 mb-3"><a href="#">Seven explanation on why investment is important.</a></h3>
+                            <p class="w-lg-90">Smooth to apprehend records on non-public finance that targets to assist human beings make clever economic decisions.</p>
+                            <a href="#" class="small">Read More</a>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AWARD
+        ================================================== -->
+        <section class="pb-6 pt-0">
+            <div class="container">
+                <div class="row text-center border-top border-light pt-6">
+                    <div class="col-sm-6 col-md-3 mb-4 mb-md-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-award injected-svg feather display-5 mb-3"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        <h3 class="h6 mb-0">Global Finance</h3>
+                        <small>Best Derivatives Providers Award 2014 for exchange performance</small>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-4 mb-md-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-award injected-svg feather display-5 mb-3"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        <h3 class="h6 mb-0">Service Award</h3>
+                        <small>Golden Peacock Innovative Product / Service Award</small>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-4 mb-sm-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-award injected-svg feather display-5 mb-3"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        <h3 class="h6 mb-0">The Best Execution Broker 2019</h3>
+                        <small>Most indicated strengths and execution of the best forex broker</small>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-award injected-svg feather display-5 mb-3"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        <h3 class="h6 mb-0">Best Trading Platform</h3>
+                        <small>Best Broker for Beginners and International Trading</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER
+        ================================================== -->
+        <footer class="bg-dark pt-8">
+            <div class="container">
+                <div class="row pb-8">
+                    <div class="col-lg-4 mb-5 mb-lg-0">
+                        <img src="{% static 'landingpage/images/MyFxPro.png' %}" class="mb-4 w-30 w-sm-20 w-md-15 w-lg-30" alt="...">
+                        <ul class="list-unstyled p-0 m-0">
+                            <li class="pb-2 text-white-60 small"><span>66 Guild Street 512B, Great North Town.</span></li>
+                            <!-- <li class="pb-2 text-white-60 small"><span>(+44) 123 456 789</span></li> -->
+                            <li class="text-white-60 small"><span>myfxpro@proton.me</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-3 col-lg-2 mb-5 mb-sm-0">
+                        <h3 class="h6 font-weight-normal mb-3 mb-lg-4 text-white">Overview</h3>
+                        <ul class="list-unstyled p-0 m-0">
+                            <li class="pb-1 small"><a href="" class="text-white-60 hover-white">Markets</a></li>
+                            <li class="py-1 small"><a href="" class="text-white-60 hover-white">Education</a></li>
+                            <li class="pt-1 small"><a href="" class="text-white-60 hover-white">Customers</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-3 col-lg-2 mb-5 mb-sm-0">
+                        <div class="pl-0 pl-lg-8">
+                            <h3 class="h6 font-weight-normal mb-3 mb-lg-4 text-white">Company</h3>
+                            <ul class="list-unstyled p-0 m-0">
+                                <li class="pb-1 small"><a href="" class="text-white-60 hover-white">About</a></li>
+                                <li class="py-1 small"><a href="" class="text-white-60 hover-white">Blog</a></li>
+                                <li class="pt-1 small"><a href="" class="text-white-60 hover-white">Careers</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-lg-2 mb-5 mb-sm-0">
+                        <h3 class="h6 font-weight-normal mb-3 mb-lg-4 text-white">Legal</h3>
+                        <div>
+                            <ul class="list-unstyled p-0 m-0">
+                                <li class="pb-1 small"><a href="" class="text-white-60 hover-white">Help Center</a></li>
+                                <li class="py-1 small"><a href="" class="text-white-60 hover-white">Legal Docs</a></li>
+                                <li class="pt-1 small"><a href="" class="text-white-60 hover-white">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-2">
+                        <h3 class="h6 font-weight-normal mb-3 mb-lg-4 text-white">Support</h3>
+                        <div>
+                            <ul class="list-unstyled p-0 m-0">
+                                <li class="small"><a href="" class="text-white-60 hover-white">Documentation</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-8">
+                    <div class="col-12">
+                        <h6 class="text-white mb-3"><i class="fas fa-exclamation-triangle text-danger small me-2"></i>Risk warning</h6>
+                        <small>An investor may also get returned much less than the amount invested. Information on beyond performance, wherein given, isn't always always a manual to destiny performance." Or: "The capital price of gadgets withinside the fund can differ and the rate of gadgets can cross down in addition to up and isn't always guaranteed.</small>
+                    </div>
+                </div>
+                <div class="border-top py-4 border-light-white">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            <p class="text-white-95 mb-0 small">&copy; Copyright Profit <span class="current-year"></span>. All Rights Reserved.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled social-icon2 p-0 m-0 text-center text-md-end">
+                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- BUY TEMPLATE
+    ================================================== -->
+    <!-- <div class="buy-theme alt-font d-none d-lg-inline-block"><a href="https://wrapbootstrap.com/theme/profit-investment-stock-broker-template-WB0C72627" target="_blank"><i class="fas fa-cart-plus"></i><span>Buy Template</span></a></div>
+
+    <div class="all-demo alt-font d-none d-lg-inline-block"><a href="" target="_blank"><i class="far fa-envelope"></i><span>Quick Question?</span></a></div> -->
+
+    <!-- SCROLL TO TOP
+    ================================================== -->
+    <a href="#" class="scroll-to-top"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+
+    <!-- ALL JAVASCRIPT
+    ================================================== -->
+
+    <!-- Global JS -->
+    <script src="https://profit.websitelayout.net/html/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="https://profit.websitelayout.net/html/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="https://profit.websitelayout.net/html/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Libs JS -->
+    <script src="https://profit.websitelayout.net/html/assets/libs/svg-injector/dist/svg-injector.min.js"></script>
+    <script src="https://profit.websitelayout.net/html/assets/libs/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="https://profit.websitelayout.net/html/assets/libs/owl-carousel/dist/js/owl.carousel.min.js"></script>
+    <script src="https://profit.websitelayout.net/html/assets/libs/jarallax/dist/jarallax.min.js"></script>
+
+    <!-- Theme JS -->
+    <script src="https://profit.websitelayout.net/html/assets/js/theme.js"></script>
+
+</body>
+
+
+<!-- Mirrored from profit.websitelayout.net/html/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 20 Mar 2025 14:16:28 GMT -->
+</html>
