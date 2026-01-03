@@ -1,44 +1,142 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KYC Status</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100">
+    <title>KYC Status - EC Markets</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepBlue: '#050614',       
+                        cardBlue: '#0F1123',       
+                        neonPurple: '#7C3AED',     
+                        neonBlue: '#3B82F6',
+                        neonGreen: '#10B981',
+                        neonRed: '#EF4444',
+                        neonYellow: '#F59E0B',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
-    <div class="min-h-screen flex items-center justify-center">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
+    <style>
+        body { 
+            background-color: #050614; 
+            color: #ffffff; 
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Glass Effect */
+        .glass-card {
+            background: rgba(15, 17, 35, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Pulse Animation for Pending */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+        .pulse-circle {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center relative">
+
+    <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-neonPurple/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+
+    <div class="w-full max-w-md p-6 relative z-10">
+        
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-neonPurple to-neonBlue flex items-center justify-center font-bold text-white text-xl shadow-lg">E</div>
+                <span class="text-xl font-bold tracking-tight text-white">EC Markets</span>
+            </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 text-center border-t border-white/10">
 
             {% if kyc_status == "approved" %}
-            <!-- Approved Section -->
-            <h2 class="text-2xl font-semibold text-green-600 mb-4">Your KYC is Approved</h2>
-            <p class="text-gray-600 mb-6">Congratulations! Your KYC has been approved. You can now access your account.</p>
-            <svg class="w-16 h-16 mx-auto text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <a href="{% url 'login' %}" class="mt-6 bg-green-500 text-white px-4 py-2 rounded inline-block">Log In</a>
+                <div class="mb-6 relative inline-block">
+                    <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto text-neonGreen text-4xl shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="absolute inset-0 bg-green-500/20 rounded-full blur-xl -z-10"></div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-white mb-2">Account Verified</h2>
+                <p class="text-gray-400 text-sm mb-8 leading-relaxed">
+                    Congratulations! Your identity has been successfully verified. You now have full access to all trading features.
+                </p>
+                
+                <a href="{% url 'login' %}" class="block w-full py-3.5 text-white bg-gradient-to-r from-[#10B981] to-[#059669] rounded-xl font-bold shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] transition duration-300 transform hover:-translate-y-0.5">
+                    Access Dashboard
+                </a>
 
             {% elif kyc_status == "rejected" %}
-            <!-- Rejected Section -->
-            <h2 class="text-2xl font-semibold text-red-600 mb-4">Your KYC is Rejected</h2>
-            <p class="text-gray-600 mb-6">Unfortunately, your KYC submission has been rejected. Please contact the administrator for further assistance.</p>
-            <svg class="w-16 h-16 mx-auto text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
-            </svg>
-            <a href="mailto:admin@example.com" class="text-blue-500 underline mt-4 block">Contact Administrator</a>
+                <div class="mb-6 relative inline-block">
+                    <div class="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto text-neonRed text-4xl shadow-[0_0_20px_rgba(239,68,68,0.3)]">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl font-bold text-white mb-2">Verification Failed</h2>
+                <p class="text-gray-400 text-sm mb-8 leading-relaxed">
+                    Unfortunately, we could not verify your documents. This may be due to unclear images or mismatched details.
+                </p>
+
+                <div class="space-y-3">
+                    <a href="mailto:support@ecmarketsindia.com" class="block w-full py-3.5 text-white bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl font-bold transition duration-300">
+                        Contact Support
+                    </a>
+                    <p class="text-xs text-gray-500">Please contact support to resubmit your documents.</p>
+                </div>
 
             {% elif kyc_status == "pending" %}
-            <!-- Under Review Section -->
-            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Your KYC is Under Review</h2>
-            <p class="text-gray-600 mb-6">Your KYC documents are being reviewed. This may take 24-48 hours. You will be notified once the review is complete.</p>
-            <svg class="w-16 h-16 mx-auto text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
-            </svg>
-            <p class="mt-6 text-gray-500">Thank you for your patience!</p>
+                <div class="mb-6 relative inline-block">
+                    <div class="absolute inset-0 rounded-full border border-neonYellow/50 pulse-circle"></div>
+                    <div class="w-20 h-20 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto text-neonYellow text-4xl">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl font-bold text-white mb-2">Under Review</h2>
+                <p class="text-gray-400 text-sm mb-8 leading-relaxed">
+                    We are currently reviewing your documents. This process usually takes <strong>24-48 hours</strong>. You will be notified via email once complete.
+                </p>
+
+                <div class="p-4 bg-white/5 rounded-xl border border-white/5 text-left">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-2 h-2 rounded-full bg-neonYellow animate-pulse"></div>
+                        <span class="text-xs font-bold text-white uppercase tracking-wider">Status</span>
+                    </div>
+                    <p class="text-xs text-gray-400">Your documents are in the queue. No further action is required at this time.</p>
+                </div>
             {% endif %}
 
+        </div>
+        
+        <div class="mt-8 text-center">
+            <p class="text-xs text-gray-600">Need help? <a href="mailto:support@ecmarketsindia.com" class="text-neonBlue hover:text-white transition">Email Support</a></p>
         </div>
     </div>
 

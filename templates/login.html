@@ -1,72 +1,154 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - EC Markets</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepBlue: '#050614',       
+                        cardBlue: '#0F1123',       
+                        neonPurple: '#7C3AED',     
+                        neonBlue: '#3B82F6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        body {
-            background-image: url('https://images.unsplash.com/photo-1503914068268-5413b35b45ad?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-            background-size: cover;
-            background-position: center;
+        /* Prevent scrolling on the body */
+        body { 
+            background-color: #050614; 
+            color: #ffffff; 
+            height: 100dvh; /* Dynamic Viewport Height for Mobile */
+            width: 100vw;
+            overflow: hidden; /* Lock scroll */
+            position: fixed; /* Prevent bounce effects on iOS */
         }
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
+        
+        /* Glass Effect */
+        .glass-card {
+            background: rgba(15, 17, 35, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        .logo {
-            animation: bounce 1s infinite;
+
+        /* Style Django Inputs */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            background-color: #050614;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: all 0.3s;
+            font-size: 16px; /* Prevents auto-zoom on iOS */
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-lg p-8 glass rounded-lg shadow-2xl transform transition duration-500 hover:scale-105">
-        <h2 class="mb-6 text-4xl font-bold text-center text-black" >Login to Your Account</h2>
+<body class="flex items-center justify-center relative">
 
-        <!-- Displaying any form errors -->
-        {% if form.non_field_errors %}
-            <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
-                {{ form.non_field_errors }}
-            </div>
-        {% endif %}
+    <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-neonPurple/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-neonBlue/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
 
-        <!-- Login Form -->
-        <form method="post">
-            {% csrf_token %}
-
-            <div class="mb-5">
-                <label for="email" class="block mb-2 text-sm font-medium text-white">Email</label>
-                {{ form.email }}
-                {% if form.email.errors %}
-                    <div class="text-sm text-red-600 mt-1">
-                        {{ form.email.errors }}
-                    </div>
-                {% endif %}
-            </div>
-
-            <div class="mb-5">
-                <label for="password" class="block mb-2 text-sm font-medium text-white">Password</label>
-                {{ form.password }}
-                {% if form.password.errors %}
-                    <div class="text-sm text-red-600 mt-1">
-                        {{ form.password.errors }}
-                    </div>
-                {% endif %}
-            </div>
-
-            <button type="submit" class="w-full py-2 mt-4 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 focus:outline-none transition duration-300 transform hover:scale-105">
-                Login
-            </button>
-        </form>
-
-        <!-- Redirect to Signup Link -->
-        <p class="mt-6 text-center text-black">
-            Don’t have an account?
-            <a href="{% url 'signup' %}" class="text-indigo-300 hover:text-indigo-500 font-medium transition duration-300 hover:underline">
-                Sign Up
+    <div class="w-full max-w-md p-6 relative z-10 flex flex-col justify-center h-full sm:h-auto">
+        
+        <div class="text-center mb-6 sm:mb-8 flex-shrink-0">
+            <a href="/" class="inline-flex items-center gap-2 mb-2 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-neonPurple to-neonBlue flex items-center justify-center font-bold text-white text-xl shadow-lg">E</div>
             </a>
-        </p>
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Welcome Back</h2>
+            <p class="text-gray-400 text-xs sm:text-sm mt-1">Enter your credentials to access terminal.</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 sm:p-8 flex-shrink-0">
+            
+            {% if form.non_field_errors %}
+                <div class="p-3 mb-4 text-xs sm:text-sm text-red-200 bg-red-900/30 border border-red-500/30 rounded-lg flex items-center gap-3">
+                    <i class="fas fa-exclamation-circle text-red-400"></i>
+                    <div>{{ form.non_field_errors }}</div>
+                </div>
+            {% endif %}
+
+            <form method="post" class="space-y-4 sm:space-y-5">
+                {% csrf_token %}
+
+                <div>
+                    <label for="email" class="block mb-1.5 text-xs sm:text-sm font-medium text-gray-300">Email Address</label>
+                    <div class="relative">
+                        {{ form.email }}
+                    </div>
+                    {% if form.email.errors %}
+                        <div class="text-xs text-red-400 mt-1 pl-1">
+                            {{ form.email.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="password" class="block text-xs sm:text-sm font-medium text-gray-300">Password</label>
+                        <a href="#" class="text-xs text-neonBlue hover:text-white transition">Forgot?</a>
+                    </div>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <div class="text-xs text-red-400 mt-1 pl-1">
+                            {{ form.password.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="w-full py-3 mt-2 text-white bg-gradient-to-r from-neonPurple to-neonBlue rounded-xl font-bold text-sm sm:text-base hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] transition duration-300 active:scale-95">
+                    Log In
+                </button>
+            </form>
+
+            <div class="my-5 sm:my-6 flex items-center gap-4">
+                <div class="h-px bg-white/10 flex-1"></div>
+                <span class="text-[10px] sm:text-xs text-gray-500 uppercase">Or</span>
+                <div class="h-px bg-white/10 flex-1"></div>
+            </div>
+
+            <p class="text-center text-gray-400 text-xs sm:text-sm">
+                Don’t have an account?
+                <a href="{% url 'signup' %}" class="text-neonBlue hover:text-white font-semibold transition ml-1">
+                    Create Account
+                </a>
+            </p>
+        </div>
+        
+        <div class="mt-6 text-center text-[10px] sm:text-xs text-gray-600 space-x-4 flex-shrink-0">
+            <a href="#" class="hover:text-gray-400 transition">Privacy</a>
+            <a href="#" class="hover:text-gray-400 transition">Terms</a>
+            <a href="#" class="hover:text-gray-400 transition">Help</a>
+        </div>
     </div>
+
 </body>
 </html>

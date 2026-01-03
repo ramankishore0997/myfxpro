@@ -1,623 +1,515 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-
-<!-- Mirrored from profit.websitelayout.net/html/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 20 Mar 2025 14:16:28 GMT -->
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC Markets - Zero Pip Trading</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepBlue: '#050614',       
+                        cardBlue: '#0F1123',       
+                        neonPurple: '#7C3AED',     
+                        neonGreen: '#10B981',       
+                        neonRed: '#EF4444',
+                        neonBlue: '#3B82F6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
 
-    <!-- Title  -->
-    <title>Profit - Investment and Stock Broker MyFxPro</title>
+    <style>
+        body { background-color: #050614; color: #ffffff; }
+        
+        /* Glass Effect */
+        .glass-card {
+            background: rgba(15, 17, 35, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-    <!-- Metas -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Profit - Investment and Stock Broker MyFxPro">
-    <meta name="author" content="MyFxPro">
+        /* Animated Graph Line */
+        .chart-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 2.5s ease-out forwards;
+        }
+        @keyframes draw {
+            to { stroke-dashoffset: 0; }
+        }
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="https://profit.websitelayout.net/html/assets/img/favicon.ico">
+        /* Pulse Animation for Live Dot */
+        .live-dot {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
-
-    <!-- Libs CSS -->
-    <link rel="stylesheet" href="https://profit.websitelayout.net/html/assets/libs/font-awesome/css/fontawesome-all.css">
-    <link rel="stylesheet" href="https://profit.websitelayout.net/html/assets/libs/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="https://profit.websitelayout.net/html/assets/libs/owl-carousel/dist/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="https://profit.websitelayout.net/html/assets/libs/owl-carousel/dist/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="https://profit.websitelayout.net/html/assets/libs/jarallax/dist/jarallax.css">
-
-    <!-- Theme CSS -->
-    <link href="https://profit.websitelayout.net/html/assets/css/theme.css" rel="stylesheet">
-
+        /* Ticker Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+        
+        /* Code Editor Effect */
+        .code-window {
+            box-shadow: 0 20px 50px -12px rgba(124, 58, 237, 0.25);
+        }
+    </style>
 </head>
+<body class="antialiased overflow-x-hidden">
 
-<body>
+    <nav class="fixed w-full z-50 top-0 left-0 bg-[#050614]/90 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded bg-gradient-to-tr from-neonPurple to-blue-600 flex items-center justify-center font-bold text-white">E</div>
+                    <span class="text-xl font-bold tracking-tight">EC Markets</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition">Markets</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition">Algo Trading</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition">Platforms</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="{% url 'login' %}" class="text-sm font-medium text-white hover:text-neonPurple">Log In</a>
+                    <a href="{% url 'signup' %}" class="bg-neonPurple hover:bg-purple-600 px-5 py-2 rounded-lg text-sm font-bold transition">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <!-- PAGE LOADING
-    ================================================== -->
-    <div id="preloader"></div>
+    <section class="relative pt-32 pb-20 overflow-hidden">
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-neonPurple/10 rounded-full blur-[120px] -z-10"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] -z-10"></div>
 
-    <!-- MAIN WRAPPER
-    ================================================== -->
-    <div class="main-wrapper">
-
-        <!-- HEADER
-        ================================================== -->
-        <header>
-
-            <div class="container">
-
-                <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
-
-                    <!-- Brand -->
-                    <a class="navbar-brand me-lg-5" href="">
-                        <img src="{% static 'landingpage/images/MyFxPro.png' %}" alt="...">
-                    </a>
-                    <!-- End Brand -->
-
-                    <!-- Toggler -->
-                    <button type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                 
-                    <!-- End Toggler -->
-
-                    <!-- Collaps -->
-                    <div id="navbarContent" class="collapse navbar-collapse">
-
-                        <!-- Navigation -->
-                        <ul class="navbar-nav align-items-lg-center ms-auto">
-
-                            <!-- <li class="nav-item dropdown">
-                                <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle">Home</a>
-                                <ul class="dropdown-menu shadow">
-                                    <li><a href="https://profit.websitelayout.net/html/index.html" class="dropdown-item">Home 1</a></li>
-                                    <li><a href="https://profit.websitelayout.net/html/index-2.html" class="dropdown-item">Home 2</a></li>
-                                    <li><a href="https://profit.websitelayout.net/html/index-3.html" class="dropdown-item">Home 3</a></li>
-                                    <li><a href="https://profit.websitelayout.net/html/index-4.html" class="dropdown-item">Home 4</a></li>
-                                </ul>
-                            </li> -->
-                            
-                            <li class="nav-item"><a class="nav-link" href="">Markets</a></li>
-                            <li class="nav-item dropdown">
-                                <a href="#" data-bs-toggle="dropdown" class="nav-link ">Company</a>
-                                <ul class="dropdown-menu shadow">
-                                    <li><a href="" class="dropdown-item">About</a></li>
-                                    <li><a href="" class="dropdown-item">Blog</a></li>
-                                    <li><a href="" class="dropdown-item">Blog Article</a></li>
-                                    <li><a href="" class="dropdown-item">Careers</a></li>
-                                    <li><a href="" class="dropdown-item">Contact</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="nav-item"><a class="nav-link" href="">Education</a></li>
-                            <li class="nav-item"  style="margin-left: 1rem;"><a class="nav-link btn btn-sm d-lg-inline-block btn-primary ms-auto text-white" href="{% url 'login' %}" style="color: white !important;">Login</a></li>
-                            <li class="nav-item" style="margin-left: 1rem;"><a style="margin-left: 1rem;" class="nav-link btn btn-sm d-lg-inline-block btn-primary ms-auto text-white" href="{% url 'signup' %}" style="color: white !important;">Register</a></li>
-
-                            <!-- <li class="nav-item dropdown">
-                                <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle">Resources</a>
-                                <ul class="dropdown-menu shadow">
-                                    <li><a href="https://profit.websitelayout.net/html/help-center-home.html" class="dropdown-item">Help Center</a></li>
-                                    <li><a href="https://profit.websitelayout.net/html/customers.html" class="dropdown-item">Customers</a></li>
-                                    <li><a href="https://profit.websitelayout.net/html/legal-docs.html" class="dropdown-item">Legal Docs</a></li>
-                                </ul>
-                            </li> -->
-
-                        </ul>
-
-                        <ul class="navbar-nav align-items-lg-center ms-lg-auto">
-                            <li class="nav-item dropdown">
-                                <!-- <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle">Docs</a> -->
-                                <ul class="dropdown-menu shadow pt-2 pb-0 py-lg-3">
-                                    <li>
-                                        <a href="" class="dropdown-item">
-                                            <div class="d-flex border-bottom border-light pb-3">
-                                                <img class="feather display-6" src="https://profit.websitelayout.net/html/assets/img/svg/file-text.svg" alt="...">
-                                                <div class="ms-3">
-                                                    <h6 class="mb-0">Documentation</h6>
-                                                    <p class="small mb-0">Customizing and building</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="" class="dropdown-item">
-                                            <div class="d-flex border-bottom border-light pt-2 pb-3 pt-lg-1">
-                                                <img class="feather display-6" src="https://profit.websitelayout.net/html/assets/img/svg/grid.svg" alt="...">
-                                                <div class="ms-3">
-                                                    <h6 class="mb-0">Components</h6>
-                                                    <p class="small mb-0">Components and more</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="mailto:myfxpro@proton.me" class="dropdown-item">
-                                            <div class="d-flex pt-2 pt-lg-0">
-                                                <img class="feather display-6" src="https://profit.websitelayout.net/html/assets/img/svg/help-circle.svg" alt="...">
-                                                <div class="ms-3">
-                                                    <h6 class="mb-0">Support</h6>
-                                                    <p class="small mb-0">chitrakootweb@gmail.com</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                     
-
-                        </ul>
-                        <!-- End Navigation -->
-
-                    </div>
-                    <!-- End Collaps -->
-
-                </nav>
-
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6">
+                <span class="w-2 h-2 rounded-full bg-neonGreen live-dot"></span>
+                <span class="text-xs font-mono text-neonGreen uppercase tracking-widest">Live Spreads Active</span>
             </div>
 
-        </header>
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight">
+                Trade with <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neonPurple to-blue-400">Zero Pips.</span>
+            </h1>
 
-        <!-- BANNER
-        ================================================== -->
-        <div class="main-slider">
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-400 mb-10">
+                Access raw spreads from 0.0 pips on EUR/USD. <br> Institutional grade execution for serious traders.
+            </p>
 
-            <div class="container-fluid px-0">
-                <!-- Slider -->
-                <div class="owl-carousel owl-theme h-100">
-                    <div class="item py-24 overlay overlay-black overlay-70 bg-cover" style="background-image: url(https://profit.websitelayout.net/html/assets/img/banner/slide-01.jpg);">
-                        <div class="container py-4 py-md-6 py-lg-10">
-                            <div class="position-absolute translate-middle-y w-100">
-                                <div class="row w-100">
-                                    <div class="col-sm-11 col-md-9 col-lg-7">
-                                        <h1 class="mb-3 text-white display-5 fw-bold">We provide professional market infrastructure</h1>
-                                        <p class="text-white-90 mb-4 lead">Tap into the world's business sectors and investigate perpetual exchanging openings with tight spreads and no commission.</p>
-                                        <!-- <a href="#" class="btn btn-primary">Read More</a> -->
-                                    </div>
-                                </div>
+            <div class="flex justify-center gap-4 mb-16">
+                <a href="{% url 'signup' %}" class="bg-neonPurple hover:bg-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition shadow-lg shadow-purple-900/20">
+                    Start Trading
+                </a>
+                <a href="#" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-4 rounded-xl font-bold text-lg transition">
+                    View Spreads
+                </a>
+            </div>
+
+            <div class="relative mx-auto max-w-5xl">
+                <div class="glass-card rounded-2xl p-6 border-t border-white/10 shadow-2xl relative overflow-hidden">
+                    <div class="flex justify-between items-center mb-8">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-white/10 p-2 rounded-lg"><i class="fab fa-bitcoin text-2xl text-orange-500"></i></div>
+                            <div class="text-left">
+                                <div class="text-lg font-bold">BTC/USD</div>
+                                <div class="text-xs text-gray-400 font-mono">Bitcoin Index</div>
                             </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-mono font-bold text-white">$45,231.40</div>
+                            <div class="text-sm font-mono text-neonGreen">+1.24% <i class="fas fa-arrow-up"></i></div>
                         </div>
                     </div>
 
-                    <div class="item py-24 overlay overlay-black overlay-70 bg-cover" style="background-image: url(https://profit.websitelayout.net/html/assets/img/banner/slide-02.jpg);">
-                        <div class="container py-4 py-md-6 py-lg-10">
-                            <div class="position-absolute translate-middle-y w-100">
-                                <div class="row w-100">
-                                    <div class="col-sm-11 col-md-9 col-lg-7">
-                                        <h1 class="mb-3 text-white display-5 fw-bold">Start trading the world's most popular <span class="text-uppercase">Profit</span></h1>
-                                        <p class="text-white-90 mb-4 lead">Tap into the world's business sectors and investigate perpetual exchanging openings with tight spreads and no commission.</p>
-                                        <!-- <a href="#" class="btn btn-primary">Read More</a> -->
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="relative h-64 w-full bg-gradient-to-b from-neonPurple/5 to-transparent rounded-lg border border-white/5 mb-6 overflow-hidden">
+                        <div class="absolute inset-0 grid grid-rows-4 w-full h-full opacity-10 pointer-events-none">
+                            <div class="border-b border-white"></div>
+                            <div class="border-b border-white"></div>
+                            <div class="border-b border-white"></div>
                         </div>
+                        <svg viewBox="0 0 1000 300" class="w-full h-full absolute bottom-0 left-0" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="gradientFill" x1="0" x2="0" y1="0" y2="1">
+                                    <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.4"/>
+                                    <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M0,250 C100,200 200,280 300,150 C400,50 500,180 600,120 C700,60 800,200 900,100 L1000,50 L1000,300 L0,300 Z" fill="url(#gradientFill)" />
+                            <path d="M0,250 C100,200 200,280 300,150 C400,50 500,180 600,120 C700,60 800,200 900,100 L1000,50" fill="none" stroke="#7C3AED" stroke-width="3" class="chart-line" />
+                        </svg>
+                        <div class="absolute top-[50px] right-0 w-3 h-3 bg-neonPurple rounded-full shadow-[0_0_10px_#7C3AED] animate-pulse"></div>
                     </div>
 
-                    <div class="item py-24 overlay overlay-black overlay-70 bg-cover" style="background-image: url(https://profit.websitelayout.net/html/assets/img/banner/slide-03.jpg);">
-                        <div class="container py-4 py-md-6 py-lg-10">
-                            <div class="position-absolute translate-middle-y w-100">
-                                <div class="row w-100">
-                                    <div class="col-sm-11 col-md-9 col-lg-7">
-                                        <h1 class="mb-3 text-white display-5 fw-bold">Find and compare the best exchange rates</h1>
-                                        <p class="text-white-90 mb-4 lead">Tap into the world's business sectors and investigate perpetual exchanging openings with tight spreads and no commission.</p>
-                                        <!-- <a href="#" class="btn btn-primary">Read More</a> -->
-                                    </div>
-                                </div>
+                    <div class="grid grid-cols-3 gap-4 border-t border-white/10 pt-4">
+                        <div class="text-center">
+                            <div class="text-xs text-gray-500 uppercase">24h Volume</div>
+                            <div class="font-mono text-sm">$42.8B</div>
+                        </div>
+                        <div class="text-center border-l border-white/10">
+                            <div class="text-xs text-gray-500 uppercase">Spread</div>
+                            <div class="font-mono text-sm text-neonGreen">0.0 Pips</div>
+                        </div>
+                        <div class="text-center border-l border-white/10">
+                            <div class="text-xs text-gray-500 uppercase">Execution</div>
+                            <div class="font-mono text-sm">12ms</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="w-full border-y border-white/5 bg-[#0A0C16] overflow-hidden py-3">
+        <div class="flex whitespace-nowrap gap-16 animate-marquee">
+            <div class="flex items-center gap-2"><span class="font-bold text-gray-400">EUR/USD</span><span class="text-white">1.0921</span><span class="text-xs text-green-400 bg-green-400/10 px-1 rounded">0.0 PIPS</span></div>
+            <div class="flex items-center gap-2"><span class="font-bold text-gray-400">GBP/USD</span><span class="text-white">1.2640</span><span class="text-xs text-green-400 bg-green-400/10 px-1 rounded">0.1 PIPS</span></div>
+            <div class="flex items-center gap-2"><span class="font-bold text-gray-400">USD/JPY</span><span class="text-white">145.30</span><span class="text-xs text-green-400 bg-green-400/10 px-1 rounded">0.0 PIPS</span></div>
+            <div class="flex items-center gap-2"><span class="font-bold text-gray-400">XAU/USD</span><span class="text-white">2,045.10</span><span class="text-xs text-green-400 bg-green-400/10 px-1 rounded">1.2 PIPS</span></div>
+            <div class="flex items-center gap-2"><span class="font-bold text-gray-400">EUR/USD</span><span class="text-white">1.0921</span><span class="text-xs text-green-400 bg-green-400/10 px-1 rounded">0.0 PIPS</span></div>
+        </div>
+    </div>
+
+    <section class="py-24 bg-[#080911] relative border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-neonPurple font-mono text-sm uppercase tracking-wider">Pricing</span>
+                <h2 class="text-3xl md:text-5xl font-bold mt-2 mb-4">Ultra-Low Cost Trading</h2>
+                <p class="text-gray-400">We aggregate liquidity from top tier banks to give you the best possible spreads.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-cardBlue p-8 rounded-3xl border border-white/5 hover:border-neonPurple/50 transition duration-300 group">
+                    <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-6 text-3xl">💎</div>
+                    <h3 class="text-2xl font-bold mb-2">0.0 Pips</h3>
+                    <div class="h-1 w-12 bg-neonPurple rounded mb-4"></div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Access raw spreads directly from the market. No markup on our RAW ECN accounts.</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-neonGreen"></i> EUR/USD from 0.0</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-neonGreen"></i> GBP/USD from 0.1</li>
+                    </ul>
+                </div>
+                <div class="bg-cardBlue p-8 rounded-3xl border border-white/5 hover:border-neonPurple/50 transition duration-300 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10"><i class="fas fa-university text-9xl"></i></div>
+                    <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-6 text-3xl">🌊</div>
+                    <h3 class="text-2xl font-bold mb-2">Deep Liquidity</h3>
+                    <div class="h-1 w-12 bg-blue-500 rounded mb-4"></div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Our dark pool liquidity ensures large orders are filled without slippage. Connected to 25+ Tier-1 banks.</p>
+                </div>
+                <div class="bg-cardBlue p-8 rounded-3xl border border-white/5 hover:border-neonPurple/50 transition duration-300 group">
+                    <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-6 text-3xl">⚡</div>
+                    <h3 class="text-2xl font-bold mb-2">&lt; 15ms Latency</h3>
+                    <div class="h-1 w-12 bg-neonGreen rounded mb-4"></div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">NY4 Equinix servers cross-connected to major liquidity providers for lightning-fast execution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <div>
+                    <span class="text-neonBlue font-mono text-sm uppercase tracking-wider">Cross-Platform</span>
+                    <h2 class="text-3xl md:text-5xl font-bold mt-2 mb-6">Trade Anywhere,<br> Any Device.</h2>
+                    <p class="text-gray-400 text-lg mb-8">
+                        Whether you are at your desk or on the go, EC Markets ensures you never miss a trade. Seamless synchronization across all your devices.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-4 hover:bg-white/5 transition cursor-pointer">
+                            <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-400"><i class="fab fa-windows text-xl"></i></div>
+                            <div>
+                                <div class="font-bold text-sm">Windows</div>
+                                <div class="text-xs text-gray-500">Desktop Terminal</div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-4 hover:bg-white/5 transition cursor-pointer">
+                            <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center text-white"><i class="fab fa-apple text-xl"></i></div>
+                            <div>
+                                <div class="font-bold text-sm">MacOS</div>
+                                <div class="text-xs text-gray-500">Native App</div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-4 hover:bg-white/5 transition cursor-pointer">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400"><i class="fab fa-android text-xl"></i></div>
+                            <div>
+                                <div class="font-bold text-sm">Android</div>
+                                <div class="text-xs text-gray-500">Mobile Trader</div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-4 hover:bg-white/5 transition cursor-pointer">
+                            <div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-400"><i class="fas fa-globe text-xl"></i></div>
+                            <div>
+                                <div class="font-bold text-sm">WebTrader</div>
+                                <div class="text-xs text-gray-500">Browser Based</div>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="relative">
+                    <div class="absolute inset-0 bg-neonBlue/20 blur-[80px] rounded-full"></div>
+                    <div class="glass-card rounded-2xl p-2 border border-white/10 relative z-10 transform hover:rotate-1 transition duration-500">
+                        <div class="bg-[#0A0C16] rounded-xl p-8 min-h-[400px] flex flex-col justify-between">
+                             <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                                 <div class="flex gap-2">
+                                     <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                     <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                     <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                 </div>
+                                 <div class="text-xs text-gray-500">WebTrader v4.0</div>
+                             </div>
+                             <div class="space-y-3 mt-4">
+                                 <div class="flex justify-between items-center bg-white/5 p-3 rounded">
+                                     <div class="flex items-center gap-3">
+                                         <div class="w-8 h-8 rounded bg-orange-500/20 flex items-center justify-center text-orange-500"><i class="fab fa-bitcoin"></i></div>
+                                         <div>
+                                             <div class="text-sm font-bold">Bitcoin</div>
+                                             <div class="text-xs text-gray-500">BTC/USD</div>
+                                         </div>
+                                     </div>
+                                     <div class="text-right">
+                                         <div class="text-sm font-bold">$45,230.00</div>
+                                         <div class="text-xs text-green-400">+2.4%</div>
+                                     </div>
+                                 </div>
+                                 <div class="flex justify-between items-center bg-white/5 p-3 rounded">
+                                     <div class="flex items-center gap-3">
+                                         <div class="w-8 h-8 rounded bg-blue-500/20 flex items-center justify-center text-blue-500"><i class="fab fa-ethereum"></i></div>
+                                         <div>
+                                             <div class="text-sm font-bold">Ethereum</div>
+                                             <div class="text-xs text-gray-500">ETH/USD</div>
+                                         </div>
+                                     </div>
+                                     <div class="text-right">
+                                         <div class="text-sm font-bold">$3,100.00</div>
+                                         <div class="text-xs text-green-400">+1.1%</div>
+                                     </div>
+                                 </div>
+                                 <div class="h-32 bg-white/5 rounded mt-4 relative overflow-hidden flex items-end">
+                                     <div class="w-1/5 h-1/3 bg-neonPurple/20 mx-1"></div>
+                                     <div class="w-1/5 h-1/2 bg-neonPurple/40 mx-1"></div>
+                                     <div class="w-1/5 h-2/3 bg-neonPurple/60 mx-1"></div>
+                                     <div class="w-1/5 h-1/2 bg-neonPurple/40 mx-1"></div>
+                                     <div class="w-1/5 h-3/4 bg-neonPurple/80 mx-1"></div>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#080911] border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <div class="order-2 lg:order-1 relative">
+                    <div class="absolute -left-10 -top-10 w-40 h-40 bg-neonGreen/10 rounded-full blur-[50px]"></div>
+                    <div class="code-window bg-[#0F1123] rounded-xl border border-white/10 p-6 font-mono text-sm overflow-hidden">
+                        <div class="flex gap-2 mb-6">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            <span class="ml-4 text-xs text-gray-500">algo_strategy.py</span>
+                        </div>
+                        <div class="text-gray-300 space-y-2">
+                            <p><span class="text-purple-400">import</span> ec_markets_api <span class="text-purple-400">as</span> api</p>
+                            <p class="text-gray-500"># Connect to liquidity provider</p>
+                            <p>client = api.Client(api_key=<span class="text-green-400">"YOUR_KEY"</span>)</p>
+                            <br>
+                            <p><span class="text-purple-400">def</span> <span class="text-blue-400">execute_strategy</span>(symbol):</p>
+                            <p class="pl-4">price = client.get_price(symbol)</p>
+                            <p class="pl-4"><span class="text-purple-400">if</span> price.spread < <span class="text-orange-400">0.2</span>:</p>
+                            <p class="pl-8">order = client.buy(</p>
+                            <p class="pl-12">symbol=symbol,</p>
+                            <p class="pl-12">volume=<span class="text-orange-400">5.0</span>,</p>
+                            <p class="pl-12">latency=<span class="text-green-400">"ultra_low"</span></p>
+                            <p class="pl-8">)</p>
+                            <p class="pl-8"><span class="text-yellow-400">print</span>(<span class="text-green-400">f"Order Filled: {order.id}"</span>)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-1 lg:order-2">
+                    <span class="text-neonGreen font-mono text-sm uppercase tracking-wider">Automated Trading</span>
+                    <h2 class="text-3xl md:text-5xl font-bold mt-2 mb-6">Power Your <br> Algorithms.</h2>
+                    <p class="text-gray-400 text-lg mb-8">
+                        Connect your trading bots directly to our exchange matching engine using our robust API. 
+                        Support for Python, C++, and FIX API connections.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 bg-white/5 rounded-full flex-shrink-0 flex items-center justify-center text-neonGreen"><i class="fas fa-code"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">Robust API</h4>
+                                <p class="text-gray-400 text-sm">REST and WebSocket APIs for real-time market data and order management.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 bg-white/5 rounded-full flex-shrink-0 flex items-center justify-center text-neonPurple"><i class="fas fa-server"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">VPS Hosting</h4>
+                                <p class="text-gray-400 text-sm">Co-located VPS servers in London & New York for minimal latency.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-16">Start Trading in 3 Minutes</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                <div class="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-transparent via-white/20 to-transparent -z-10"></div>
+
+                <div class="relative group">
+                    <div class="w-24 h-24 mx-auto bg-cardBlue rounded-full border-4 border-[#050614] flex items-center justify-center text-3xl font-bold text-white mb-6 group-hover:border-neonPurple transition duration-300">
+                        1
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Register</h3>
+                    <p class="text-gray-400 text-sm">Create your account and complete simple identity verification.</p>
+                </div>
+
+                <div class="relative group">
+                    <div class="w-24 h-24 mx-auto bg-cardBlue rounded-full border-4 border-[#050614] flex items-center justify-center text-3xl font-bold text-white mb-6 group-hover:border-neonPurple transition duration-300">
+                        2
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Fund</h3>
+                    <p class="text-gray-400 text-sm">Deposit funds using Crypto, Bank Transfer, or Credit Card.</p>
+                </div>
+
+                <div class="relative group">
+                    <div class="w-24 h-24 mx-auto bg-cardBlue rounded-full border-4 border-[#050614] flex items-center justify-center text-3xl font-bold text-white mb-6 group-hover:border-neonGreen transition duration-300">
+                        3
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Trade</h3>
+                    <p class="text-gray-400 text-sm">Access 500+ instruments and start trading immediately.</p>
+                </div>
+            </div>
+
+            <div class="mt-16">
+                <a href="{% url 'signup' %}" class="inline-block bg-white text-black px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-200 transition">Create Free Account</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#050614] border-t border-white/10 pt-16 pb-8 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+                
+                <div class="lg:col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 rounded bg-gradient-to-tr from-neonPurple to-blue-600 flex items-center justify-center font-bold text-white">E</div>
+                        <span class="text-xl font-bold tracking-tight text-white">EC Markets India</span>
+                    </div>
+                    <div class="text-gray-400 space-y-4">
+                        <p>
+                            66 Guild Street 512B,<br>
+                            Great North Town.
+                        </p>
+                        <a href="mailto:support@ecmarketsindia.com" class="block text-white hover:text-neonPurple transition">
+                            support@ecmarketsindia.com
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6">Overview</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" class="hover:text-neonPurple transition">Markets</a></li>
+                        <li><a href="#" class="hover:text-neonPurple transition">Education</a></li>
+                        <li><a href="#" class="hover:text-neonPurple transition">Customers</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6">Company</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" class="hover:text-neonPurple transition">About</a></li>
+                        <li><a href="#" class="hover:text-neonPurple transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-neonPurple transition">Careers</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6">Legal & Support</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" class="hover:text-neonPurple transition">Help Center</a></li>
+                        <li><a href="#" class="hover:text-neonPurple transition">Legal Docs</a></li>
+                        <li><a href="#" class="hover:text-neonPurple transition">Contact</a></li>
+                        <li><a href="#" class="hover:text-neonPurple transition">Documentation</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mb-12">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-exclamation-triangle text-neonRed"></i>
+                    <h5 class="text-white font-bold">Risk warning</h5>
+                </div>
+                <p class="text-gray-500 text-xs leading-relaxed max-w-4xl">
+                    An investor may also get returned much less than the amount invested. Information on beyond performance, wherein given, isn't always always a manual to destiny performance. The capital price of gadgets withinside the fund can differ and the rate of gadgets can cross down in addition to up and isn't always guaranteed.
+                </p>
+            </div>
+
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-gray-500 text-xs">
+                    &copy; Copyright EC Markets 2026. All Rights Reserved.
+                </div>
+                
+                <div class="flex gap-4">
+                    <a href="#" class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
                 </div>
             </div>
 
         </div>
-
-        <!-- EXTRA
-        ================================================== -->
-        <section class="py-4 bg-dark">
-            <div class="container-fluid">
-                <div class="owl-carousel owl-theme markets text-center">
-                    <div>
-                        <span class="text-white small">Walmart Inc (WMT)</span>
-                        <span class="badge bg-success ms-2"><i class="fas fa-caret-up me-2"></i> 1,740.05</span>
-                    </div>
-
-                    <div>
-                        <span class="text-white small">Chevron Corp (CVX)</span>
-                        <span class="badge bg-success ms-2"><i class="fas fa-caret-up me-2"></i> 217.90</span>
-                    </div>
-
-                    <div>
-                        <span class="text-white small">Alphabet Inc (GOOGL)</span>
-                        <span class="badge bg-danger ms-2"><i class="fas fa-caret-down me-2"></i> 270.97</span>
-                    </div>
-
-                    <div>
-                        <span class="text-white small">Microsoft Corp (MSFT)</span>
-                        <span class="badge bg-success ms-2"><i class="fas fa-caret-up me-2"></i> 3,218.51</span>
-                    </div>
-
-                    <div>
-                        <span class="text-white small">General Motors (GM)</span>
-                        <span class="badge bg-danger ms-2"><i class="fas fa-caret-down me-2"></i> 735.11</span>
-                    </div>
-
-                    <div>
-                        <span class="text-white small">Apple Inc (AAPL)</span>
-                        <span class="badge bg-success ms-2"><i class="fas fa-caret-up me-2"></i> 1,740.05</span>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- SERVICES
-        ================================================== -->
-        <section>
-            <div class="container">
-                <div class="row text-center border-bottom pb-6">
-                    <div class="col-md-6 col-lg-4 mb-5 mb-lg-0">
-                        <div>
-                            <span class="service-icon mx-auto mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-layers injected-svg feather display-6 text-white"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                            </span>
-                            <h3 class="h5"><a href="#">0% commissions</a></h3>
-                            <p class="mb-0">The free delivery trading plan and brokerage free trading in the delivery segment.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 mb-5 mb-lg-0">
-                        <div>
-                            <span class="service-icon mx-auto mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-minimize injected-svg feather display-6 text-white"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>
-                            </span>
-                            <h3 class="h5"><a href="#">One app for all</a></h3>
-                            <p class="mb-0">You can track the latest updates on global financial markets with the our app.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div>
-                            <span class="service-icon mx-auto mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-dollar-sign injected-svg feather display-6 text-white"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                            </span>
-                            <h3 class="h5"><a href="#">Trade from anywhere</a></h3>
-                            <p class="mb-0">We provide world’s largest exchanges, you can trade from anywhere.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="pt-6">
-                    <div class="text-center">
-                        <span class="border py-2 ps-3 pe-2 align-middle rounded small d-inline-block">Dont see a fee strategies that works for you? We produce other options. <a href="#" class="btn btn-xs btn-primary mt-2 mt-sm-0 ms-sm-3">More Options</a></span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FEATURES
-        ================================================== -->
-        <section class="bg-light">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-9 col-lg-6 mb-5 mb-lg-0">
-                        <div class="position-relative pe-lg-5 text-center">
-                            <img src="https://profit.websitelayout.net/html/assets/img/content/about-02.jpg" class="rounded" alt="...">
-                            <div class="d-inline-block align-middle position-absolute top-50 start-50 translate-middle">
-                                <a class="popup-social-video video video-btn small" href="https://www.youtube.com/watch?v=C3KRwfj9F8Q">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-play injected-svg feather text-white"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-9 col-lg-6">
-                        <h2 class="h3">Most widely recognized path for all to acquire investment experience.</h2>
-                        <p class="mb-5">Gain a more exhaustive arrangement and upgrade your examination of retailers, markets, channels and classes execution.</p>
-                        <div class="row">
-                            <div class="col-sm-4 mb-3 mb-sm-0">
-                                <div class="border bg-white p-4 text-center rounded h-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-briefcase injected-svg feather display-6 mb-3"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                                    <h3 class="mb-0 h6">Various assets</h3>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 mb-3 mb-sm-0">
-                                <div class="border bg-white p-4 text-center rounded h-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-cloud-drizzle injected-svg feather display-6 mb-3"><line x1="8" y1="19" x2="8" y2="21"></line><line x1="8" y1="13" x2="8" y2="15"></line><line x1="16" y1="19" x2="16" y2="21"></line><line x1="16" y1="13" x2="16" y2="15"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="12" y1="15" x2="12" y2="17"></line><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path></svg>
-                                    <h3 class="mb-0 h6">Market analysis</h3>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="border bg-white p-4 text-center rounded h-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-edit injected-svg feather display-6 mb-3"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                    <h3 class="mb-0 h6">Enhanced tools</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PAYMENT AND PROCESS
-        ================================================== -->
-        <section>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <div class="border rounded profit-process position-relative p-5 pt-7 text-center">
-                            <h5 class="position-absolute bg-white text-primary h6 mb-0 start-50 translate-middle-x">How Profit Works</h5>
-                            <div class="row">
-                                <div class="col-sm-4 mb-4 mb-sm-0">
-                                    <div class="process-block position-relative">
-                                        <div class="process-icon mb-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-user injected-svg feather display-7"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                        </div>
-                                        <h3 class="mb-0 h6">Create Account</h3>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 mb-4 mb-sm-0">
-                                    <div class="process-block position-relative">
-                                        <div class="process-icon mb-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-dollar-sign injected-svg feather display-7"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                                        </div>
-                                        <h3 class="mb-0 h6">Invest To Plan</h3>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="process-block no-line position-relative">
-                                        <div class="process-icon mb-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-pocket injected-svg feather display-7"><path d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z"></path><polyline points="8 10 12 14 16 10"></polyline></svg>
-                                        </div>
-                                        <h3 class="mb-0 h6">Get Profit</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mt-8">
-                    <div class="col-lg-3 mb-4 mb-lg-0">
-                        <h3 class="h5 mb-0">Funding &amp; withdrawals</h3>
-                        <p class="mb-0">No deposit fee*</p>
-                    </div>
-                    <div class="col-lg-9 border-lg-left">
-                        <div class="row align-items-center text-center payment-img">
-                            <div class="col-4 col-sm-2 mb-4 mb-sm-0">
-                                <img src="assets/img/content/payment-01.png" alt="...">
-                            </div>
-                            <div class="col-4 col-sm-2 mb-4 mb-sm-0">
-                                <img src="assets/img/content/payment-02.png" alt="...">
-                            </div>
-                            <div class="col-4 col-sm-2 mb-4 mb-sm-0">
-                                <img src="assets/img/content/payment-03.png" alt="...">
-                            </div>
-                            <div class="col-4 col-sm-2">
-                                <img src="assets/img/content/payment-04.png" alt="...">
-                            </div>
-                            <div class="col-4 col-sm-2">
-                                <img src="assets/img/content/payment-05.png" alt="...">
-                            </div>
-                            <div class="col-4 col-sm-2">
-                                <img src="assets/img/content/payment-06.png" alt="...">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PLATFORMS
-        ================================================== -->
-        <section class="pt-8 pb-0 jarallax bg-cover overlay overlay-white overlay-80" data-speed="1">
-
-            <div class="jarallax-img bg-cover" style="background-image: url(https://profit.websitelayout.net/html/assets/img/banner/bg-1.jpg);"></div>
-
-            <div class="container">
-                <div class="row align-items-end justify-content-center">
-                    <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
-                        <div>
-                            <div class="row text-center">
-                                <div class="col-4">
-                                    <i class="fab fa-windows text-primary display-6 mb-2"></i>
-                                    <h3 class="mb-0 h6">Windows</h3>
-                                </div>
-                                <div class="col-4">
-                                    <i class="fab fa-apple text-primary display-6 mb-2"></i>
-                                    <h3 class="mb-0 h6">MacOS</h3>
-                                </div>
-                                <div class="col-4">
-                                    <i class="fab fa-google-play text-primary display-6 mb-2"></i>
-                                    <h3 class="mb-0 h6">Android</h3>
-                                </div>
-                            </div>
-                            <div class="bg-white p-5 mt-4">
-                                <h2 class="mb-4 h5">Take available with our powerful platforms.</h2>
-                                <p class="mb-0">There are different stages accessible nowadays that are not difficult to information exchange for and start with your venture.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-5">
-                        <div class="position-relative ps-lg-5">
-                            <img src="https://profit.websitelayout.net/html/assets/img/content/app-02.png" alt="...">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- BLOG
-        ================================================== -->
-        <section>
-            <div class="container">
-                <h2 class="h3 mb-5 text-center">Stay ahead of the curved.</h2>
-                <div class="row">
-                    <div class="col-sm-6 col-md-4 mb-5 mb-md-0">
-                        <article>
-                            <img src="https://profit.websitelayout.net/html/assets/img/blog/blog-04.jpg" class="rounded mb-4" alt="...">
-                            <small class="mb-1 d-block">By Aroob Taima <span class="ms-4">Apr. 17 2021</span></small>
-                            <h3 class="h5 mb-3"><a href="#">This story behind investment will haunt you forever!</a></h3>
-                            <p class="w-lg-90">Smooth to apprehend records on non-public finance that targets to assist human beings make clever economic decisions.</p>
-                            <a href="#" class="small">Read More</a>
-                        </article>
-                    </div>
-                    <div class="col-sm-6 col-md-4 mb-5 mb-md-0">
-                        <article>
-                            <img src="https://profit.websitelayout.net/html/assets/img/blog/blog-05.jpg" class="rounded mb-4" alt="...">
-                            <small class="mb-1 d-block">By Luiza Barbosa <span class="ms-4">Apr. 14 2021</span></small>
-                            <h3 class="h5 mb-3"><a href="#">10 investment that will actually make your life better.</a></h3>
-                            <p class="w-lg-90">Smooth to apprehend records on non-public finance that targets to assist human beings make clever economic decisions.</p>
-                            <a href="#" class="small">Read More</a>
-                        </article>
-                    </div>
-                    <div class="col-sm-6 col-md-4">
-                        <article>
-                            <img src="https://profit.websitelayout.net/html/assets/img/blog/blog-06.jpg" class="rounded mb-4" alt="...">
-                            <small class="mb-1 d-block">By Paulo Araujo <span class="ms-4">Apr. 12 2021</span></small>
-                            <h3 class="h5 mb-3"><a href="#">Seven explanation on why investment is important.</a></h3>
-                            <p class="w-lg-90">Smooth to apprehend records on non-public finance that targets to assist human beings make clever economic decisions.</p>
-                            <a href="#" class="small">Read More</a>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- AWARD
-        ================================================== -->
-        <section class="pb-6 pt-0">
-            <div class="container">
-                <div class="row text-center border-top border-light pt-6">
-                    <div class="col-sm-6 col-md-3 mb-4 mb-md-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-award injected-svg feather display-5 mb-3"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-                        <h3 class="h6 mb-0">Global Finance</h3>
-                        <small>Best Derivatives Providers Award 2014 for exchange performance</small>
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-4 mb-md-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-award injected-svg feather display-5 mb-3"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-                        <h3 class="h6 mb-0">Service Award</h3>
-                        <small>Golden Peacock Innovative Product / Service Award</small>
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-4 mb-sm-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-award injected-svg feather display-5 mb-3"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-                        <h3 class="h6 mb-0">The Best Execution Broker 2019</h3>
-                        <small>Most indicated strengths and execution of the best forex broker</small>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-award injected-svg feather display-5 mb-3"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-                        <h3 class="h6 mb-0">Best Trading Platform</h3>
-                        <small>Best Broker for Beginners and International Trading</small>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FOOTER
-        ================================================== -->
-        <footer class="bg-dark pt-8">
-            <div class="container">
-                <div class="row pb-8">
-                    <div class="col-lg-4 mb-5 mb-lg-0">
-                        <img src="{% static 'landingpage/images/MyFxPro.png' %}" class="mb-4 w-30 w-sm-20 w-md-15 w-lg-30" alt="...">
-                        <ul class="list-unstyled p-0 m-0">
-                            <li class="pb-2 text-white-60 small"><span>66 Guild Street 512B, Great North Town.</span></li>
-                            <!-- <li class="pb-2 text-white-60 small"><span>(+44) 123 456 789</span></li> -->
-                            <li class="text-white-60 small"><span>myfxpro@proton.me</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-sm-3 col-lg-2 mb-5 mb-sm-0">
-                        <h3 class="h6 font-weight-normal mb-3 mb-lg-4 text-white">Overview</h3>
-                        <ul class="list-unstyled p-0 m-0">
-                            <li class="pb-1 small"><a href="" class="text-white-60 hover-white">Markets</a></li>
-                            <li class="py-1 small"><a href="" class="text-white-60 hover-white">Education</a></li>
-                            <li class="pt-1 small"><a href="" class="text-white-60 hover-white">Customers</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-sm-3 col-lg-2 mb-5 mb-sm-0">
-                        <div class="pl-0 pl-lg-8">
-                            <h3 class="h6 font-weight-normal mb-3 mb-lg-4 text-white">Company</h3>
-                            <ul class="list-unstyled p-0 m-0">
-                                <li class="pb-1 small"><a href="" class="text-white-60 hover-white">About</a></li>
-                                <li class="py-1 small"><a href="" class="text-white-60 hover-white">Blog</a></li>
-                                <li class="pt-1 small"><a href="" class="text-white-60 hover-white">Careers</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3 col-lg-2 mb-5 mb-sm-0">
-                        <h3 class="h6 font-weight-normal mb-3 mb-lg-4 text-white">Legal</h3>
-                        <div>
-                            <ul class="list-unstyled p-0 m-0">
-                                <li class="pb-1 small"><a href="" class="text-white-60 hover-white">Help Center</a></li>
-                                <li class="py-1 small"><a href="" class="text-white-60 hover-white">Legal Docs</a></li>
-                                <li class="pt-1 small"><a href="" class="text-white-60 hover-white">Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 col-lg-2">
-                        <h3 class="h6 font-weight-normal mb-3 mb-lg-4 text-white">Support</h3>
-                        <div>
-                            <ul class="list-unstyled p-0 m-0">
-                                <li class="small"><a href="" class="text-white-60 hover-white">Documentation</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="row pb-8">
-                    <div class="col-12">
-                        <h6 class="text-white mb-3"><i class="fas fa-exclamation-triangle text-danger small me-2"></i>Risk warning</h6>
-                        <small>An investor may also get returned much less than the amount invested. Information on beyond performance, wherein given, isn't always always a manual to destiny performance." Or: "The capital price of gadgets withinside the fund can differ and the rate of gadgets can cross down in addition to up and isn't always guaranteed.</small>
-                    </div>
-                </div>
-                <div class="border-top py-4 border-light-white">
-                    <div class="row align-items-center">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            <p class="text-white-95 mb-0 small">&copy; Copyright Profit <span class="current-year"></span>. All Rights Reserved.</p>
-                        </div>
-                        <div class="col-md-6">
-                            <ul class="list-unstyled social-icon2 p-0 m-0 text-center text-md-end">
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-youtube"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-    </div>
-
-    <!-- BUY TEMPLATE
-    ================================================== -->
-    <!-- <div class="buy-theme alt-font d-none d-lg-inline-block"><a href="https://wrapbootstrap.com/theme/profit-investment-stock-broker-template-WB0C72627" target="_blank"><i class="fas fa-cart-plus"></i><span>Buy Template</span></a></div>
-
-    <div class="all-demo alt-font d-none d-lg-inline-block"><a href="" target="_blank"><i class="far fa-envelope"></i><span>Quick Question?</span></a></div> -->
-
-    <!-- SCROLL TO TOP
-    ================================================== -->
-    <a href="#" class="scroll-to-top"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
-
-    <!-- ALL JAVASCRIPT
-    ================================================== -->
-
-    <!-- Global JS -->
-    <script src="https://profit.websitelayout.net/html/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="https://profit.websitelayout.net/html/assets/libs/popper.js/dist/umd/popper.min.js"></script>
-    <script src="https://profit.websitelayout.net/html/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!-- Libs JS -->
-    <script src="https://profit.websitelayout.net/html/assets/libs/svg-injector/dist/svg-injector.min.js"></script>
-    <script src="https://profit.websitelayout.net/html/assets/libs/magnific-popup/jquery.magnific-popup.min.js"></script>
-    <script src="https://profit.websitelayout.net/html/assets/libs/owl-carousel/dist/js/owl.carousel.min.js"></script>
-    <script src="https://profit.websitelayout.net/html/assets/libs/jarallax/dist/jarallax.min.js"></script>
-
-    <!-- Theme JS -->
-    <script src="https://profit.websitelayout.net/html/assets/js/theme.js"></script>
+    </footer>
 
 </body>
-
-
-<!-- Mirrored from profit.websitelayout.net/html/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 20 Mar 2025 14:16:28 GMT -->
 </html>

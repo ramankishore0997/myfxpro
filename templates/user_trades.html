@@ -1,52 +1,110 @@
-<!-- user_trades.html -->
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Trades - EC Markets{% endblock %}
 
 {% block content %}
-    <div class="container mx-auto p-4">
-        <div class="flex justify-between items-center mb-4">
-            <h1 class="text-2xl font-semibold">Your Trades</h1>
-            <div class="text-lg font-medium">
-                <span>Total Profit: </span>
-                <span class="font-bold {% if total_profit > 0 %}text-green-500{% else %}text-red-500{% endif %}">
-                    {{ total_profit }}
-                </span>
+
+<style>
+    /* Glass Effect */
+    .glass-panel {
+        background: rgba(21, 23, 46, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Custom Dropdown Styling */
+    select {
+        background-color: #0F1123;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+</style>
+
+<div class="w-full max-w-7xl mx-auto space-y-6">
+
+    <div class="flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-white tracking-tight">Trade History</h1>
+            <p class="text-gray-400 text-sm mt-1">View and analyze your past performance.</p>
+        </div>
+
+        <div class="glass-panel px-6 py-3 rounded-xl flex items-center gap-4">
+            <span class="text-xs text-gray-400 uppercase font-bold tracking-wider">Total P/L</span>
+            <div class="text-xl font-mono font-bold {% if total_profit > 0 %}text-[#10B981]{% else %}text-[#EF4444]{% endif %}">
+                {{ total_profit }}
             </div>
         </div>
+    </div>
 
-        <!-- Filter Trades by Date -->
-        <div class="mb-4">
-            <label for="date_filter" class="mr-2">Filter by Date:</label>
-            <select id="date_filter" class="border px-2 py-1 rounded" onchange="location = this.value;">
-                <option value="?date_filter=today" {% if date_filter == 'today' %}selected{% endif %}>Today's Trades</option>
-                <option value="?date_filter=yesterday" {% if date_filter == 'yesterday' %}selected{% endif %}>Yesterday's Trades</option>
-                <option value="?date_filter=7_days" {% if date_filter == '7_days' %}selected{% endif %}>Last 7 Days' Trades</option>
+    <div class="glass-panel p-4 rounded-xl flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <label for="date_filter" class="text-sm text-gray-400 font-medium"><i class="fas fa-filter mr-2"></i>Filter:</label>
+            <select id="date_filter" class="px-4 py-2 rounded-lg text-sm font-medium focus:ring-2 focus:ring-neonPurple outline-none transition" onchange="location = this.value;">
+                <option value="?date_filter=today" {% if date_filter == 'today' %}selected{% endif %}>Today</option>
+                <option value="?date_filter=yesterday" {% if date_filter == 'yesterday' %}selected{% endif %}>Yesterday</option>
+                <option value="?date_filter=7_days" {% if date_filter == '7_days' %}selected{% endif %}>Last 7 Days</option>
             </select>
         </div>
+        
+        <button class="text-gray-400 hover:text-white transition"><i class="fas fa-download"></i></button>
+    </div>
 
-        <!-- Check if there are any trades -->
+    <div class="glass-panel rounded-2xl overflow-hidden">
         {% if trades %}
-            <table class="min-w-full bg-white border border-gray-300 rounded-lg">
-                <thead>
-                    <tr>
-                        <th class="py-2 px-4 border-b text-left">Currency Pair</th>
-                        <th class="py-2 px-4 border-b text-left">Trade Time</th>
-                        <th class="py-2 px-4 border-b text-left">Profit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for trade in trades %}
-                        <tr>
-                            <td class="py-2 px-4 border-b">{{ trade.forex_pair }}</td>
-                            <td class="py-2 px-4 border-b">{{ trade.trade_time }}</td>
-                            <td class="py-2 px-4 border-b {% if trade.profit > 0 %}text-green-500{% else %}text-red-500{% endif %}">
-                                {{ trade.profit }}
-                            </td>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/5 bg-white/5 text-xs uppercase text-gray-400 font-bold tracking-wider">
+                            <th class="py-4 px-6">Asset / Pair</th>
+                            <th class="py-4 px-6">Time Executed</th>
+                            <th class="py-4 px-6 text-right">Profit / Loss</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="text-sm text-gray-300">
+                        {% for trade in trades %}
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition duration-200">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-xs font-bold text-gray-400">
+                                            {{ trade.forex_pair|slice:":1" }}
+                                        </div>
+                                        <span class="font-bold text-white">{{ trade.forex_pair }}</span>
+                                    </div>
+                                </td>
+                                
+                                <td class="py-4 px-6 font-mono text-gray-400">
+                                    {{ trade.trade_time }}
+                                </td>
+                                
+                                <td class="py-4 px-6 text-right font-mono font-bold {% if trade.profit > 0 %}text-[#10B981]{% else %}text-[#EF4444]{% endif %}">
+                                    {% if trade.profit > 0 %}+{% endif %}{{ trade.profit }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         {% else %}
-            <p>No trades found.</p>
+            <div class="flex flex-col items-center justify-center py-16 text-center">
+                <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center text-gray-600 mb-4">
+                    <i class="fas fa-search text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white">No trades found</h3>
+                <p class="text-gray-500 text-sm mt-1">Try adjusting your date filter or start trading.</p>
+            </div>
         {% endif %}
     </div>
+
+</div>
+
 {% endblock %}

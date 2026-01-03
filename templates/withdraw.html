@@ -1,99 +1,228 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Withdraw Funds - EC Markets{% endblock %}
 
 {% block content %}
+
 <style>
-    input {
-        padding: 0.5rem 1rem;
-        border: 1px solid rgba(229, 231, 235, 1);
-        border-radius: .5rem;
-        width: 100%;
-        margin: 0;
+    /* Glass Effect */
+    .glass-panel {
+        background: rgba(21, 23, 46, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
-    .errorlist {
-        color: red;
+
+    /* Custom Input Styling to override Django defaults */
+    input[type="number"], 
+    input[type="text"], 
+    textarea {
+        background-color: #0F1123 !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+        padding: 0.75rem 1rem !important;
+        border-radius: 0.5rem !important;
+        width: 100%;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+        border-color: #EF4444 !important; /* Red focus for Withdraw */
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    }
+
+    label {
+        color: #9CA3AF; /* Gray-400 */
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-weight: 500;
+    }
+
+    /* Hide help text if it messes up UI, or style it */
+    .helptext {
+        font-size: 0.75rem;
+        color: #6B7280;
+        margin-top: 0.25rem;
+        display: block;
     }
 </style>
 
-<div class="mt-8">
-    <h3 class="text-xl font-semibold text-gray-700 mb-4">Your Withdrawal History</h3>
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
-            <thead>
-                <tr>
-                    <th class="py-2 px-4 border-b text-justify">Date</th>
-                    <th class="py-2 px-4 border-b text-justify">Amount</th>
-                    <th class="py-2 px-4 border-b text-justify">Status</th>
-                    <th class="py-2 px-4 border-b text-justify">Reason</th> <!-- New column for reason -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for request in withdrawal_requests %}
-                    <tr>
-                        <td class="py-2 px-4 border-b text-gray-600">{{ request.request_date|date:"Y-m-d H:i" }}</td>
-                        <td class="py-2 px-4 border-b text-gray-600">₹{{ request.amount }}</td>
-                        <td class="py-2 px-4 border-b text-gray-600">
-                            {% if request.is_processed %}
-                                <span class="text-green-600">Processed</span>
-                            {% elif request.is_rejected %}
-                                <span class="text-red-600">Rejected</span>
-                            {% else %}
-                                <span class="text-yellow-600">Pending</span>
-                            {% endif %}
-                        </td>
-                        <td class="py-2 px-4 border-b text-gray-600">
-                            {% if request.is_rejected and request.rejection_reason %}
-                                <button onclick="showReason('{{ request.rejection_reason }}')" class="text-blue-600 underline">
-                                    View Reason
-                                </button>
-                            {% else %}
-                                <span class="text-gray-400">-</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="4" class="py-4 text-center text-gray-500">No withdrawal history found.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div class="w-full max-w-7xl mx-auto space-y-8">
+
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-white tracking-tight">Withdraw Funds</h1>
+            <p class="text-gray-400 text-sm mt-1">Manage your payouts and view transaction history.</p>
+        </div>
+        <div class="glass-panel px-4 py-2 rounded-xl text-right hidden sm:block">
+            <p class="text-xs text-gray-400 uppercase font-bold">Available</p>
+            <p class="text-xl font-mono text-white font-bold">{{ request.user.balance }}</p>
+        </div>
     </div>
-</div>
-<div class="max-w-md bg-white p-6 rounded shadow-md mt-8">
-    <h2 class="text-2xl font-bold text-gray-700 mb-4">Withdraw Funds</h2>
-    
-    {% if can_withdraw %}
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="w-full mt-4 px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700">
-                Request Withdrawal
-            </button>
-        </form>
-    {% else %}
-        <p class="text-gray-600">
-            You have an existing withdrawal request for ₹{{ existing_request.amount }} 
-            submitted on {{ existing_request.request_date|date:"Y-m-d" }}. 
-            It will be processed by {{ estimated_processing_time|date:"Y-m-d" }}.
-        </p>
-        <button type="button" class="w-full mt-4 px-4 py-2 text-white bg-gray-400 rounded-lg cursor-not-allowed" disabled>
-            Request Withdrawal (Disabled)
-        </button>
-    {% endif %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div class="lg:col-span-1">
+            <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center text-red-500">
+                        <i class="fas fa-hand-holding-dollar text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">New Request</h3>
+                </div>
+
+                {% if can_withdraw %}
+                    <form method="post" class="space-y-5">
+                        {% csrf_token %}
+                        
+                        <div class="space-y-4">
+                            {% for field in form %}
+                            <div>
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <p class="text-red-400 text-xs mt-1">{{ field.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <button type="submit" class="w-full py-3 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold rounded-xl hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] transition duration-300 transform hover:-translate-y-0.5">
+                            Request Withdrawal
+                        </button>
+                    </form>
+                {% else %}
+                    <div class="text-center py-6">
+                        <div class="w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto mb-4 text-yellow-500 animate-pulse">
+                            <i class="fas fa-clock text-2xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-2">Request Pending</h4>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                            You have an active request for <span class="text-white font-mono">₹{{ existing_request.amount }}</span> submitted on {{ existing_request.request_date|date:"M d" }}.
+                            <br><br>
+                            Estimated processing: <span class="text-yellow-500">{{ estimated_processing_time|date:"M d, Y" }}</span>
+                        </p>
+                        <button disabled class="w-full py-3 bg-white/5 border border-white/5 text-gray-500 font-bold rounded-xl cursor-not-allowed">
+                            Withdrawal Locked
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="mt-4 p-4 rounded-xl bg-blue-500/5 border border-blue-500/10 flex gap-3">
+                <i class="fas fa-info-circle text-blue-400 mt-0.5"></i>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Withdrawals are processed within 24-48 hours. Ensure your bank details in <a href="{% url 'profile' %}" class="text-blue-400 hover:text-white">Settings</a> are correct to avoid delays.
+                </p>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2">
+            <div class="glass-panel rounded-2xl overflow-hidden min-h-[400px]">
+                <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                    <h3 class="font-bold text-white">Transaction History</h3>
+                    <div class="text-xs text-gray-500">Last 30 Days</div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-white/5 text-xs uppercase text-gray-400 font-bold tracking-wider">
+                                <th class="py-4 px-6">Date Requested</th>
+                                <th class="py-4 px-6">Amount</th>
+                                <th class="py-4 px-6 text-center">Status</th>
+                                <th class="py-4 px-6 text-right">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm text-gray-300">
+                            {% for request in withdrawal_requests %}
+                                <tr class="border-b border-white/5 hover:bg-white/5 transition duration-200">
+                                    <td class="py-4 px-6 font-mono text-gray-400">
+                                        {{ request.request_date|date:"Y-m-d H:i" }}
+                                    </td>
+                                    <td class="py-4 px-6 font-bold text-white">
+                                        ₹{{ request.amount }}
+                                    </td>
+                                    <td class="py-4 px-6 text-center">
+                                        {% if request.is_processed %}
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-500/10 text-green-500 border border-green-500/20">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Processed
+                                            </span>
+                                        {% elif request.is_rejected %}
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-500 border border-red-500/20">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Rejected
+                                            </span>
+                                        {% else %}
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-yellow-500/10 text-yellow-500 border border-yellow-500/20">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span> Pending
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="py-4 px-6 text-right">
+                                        {% if request.is_rejected and request.rejection_reason %}
+                                            <button onclick="showReason('{{ request.rejection_reason|escapejs }}')" class="text-xs text-red-400 hover:text-white underline transition">
+                                                View Reason
+                                            </button>
+                                        {% else %}
+                                            <span class="text-gray-600">-</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="py-12 text-center">
+                                        <div class="inline-block p-4 rounded-full bg-white/5 mb-3 text-gray-600">
+                                            <i class="fas fa-file-invoice text-2xl"></i>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">No withdrawal history found.</p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<!-- Popup Modal for Reason -->
-<div id="reasonModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 hidden justify-center items-center">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
-        <h2 class="text-lg font-semibold mb-4">Rejection Reason</h2>
-        <p id="reasonText" class="text-gray-700"></p>
-        <button onclick="hideReason()" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg">Close</button>
+<div id="reasonModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="hideReason()"></div>
+
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div class="relative transform overflow-hidden rounded-2xl bg-[#0F1123] border border-white/10 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg glass-panel">
+                <div class="p-6">
+                    <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10 mb-4">
+                        <i class="fas fa-triangle-exclamation text-red-500 text-xl"></i>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-lg font-bold leading-6 text-white" id="modal-title">Withdrawal Rejected</h3>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-300 bg-white/5 p-4 rounded-lg border border-white/5" id="reasonText">
+                                </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-black/20 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button type="button" class="inline-flex w-full justify-center rounded-lg bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto transition" onclick="hideReason()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     function showReason(reason) {
-        document.getElementById('reasonText').innerText = reason;
+        document.getElementById('reasonText').textContent = reason;
         document.getElementById('reasonModal').classList.remove('hidden');
     }
 

@@ -1,196 +1,288 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KYC Submission</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-</head>
-<body class="bg-gradient-to-r from-blue-50 to-indigo-50 min-h-screen">
+    <title>KYC Submission - EC Markets</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepBlue: '#050614',       
+                        cardBlue: '#0F1123',       
+                        neonPurple: '#7C3AED',     
+                        neonBlue: '#3B82F6',
+                        neonGreen: '#10B981',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
-    <div class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-lg border border-gray-100">
-            <div class="flex items-center justify-center mb-6">
-                <div class="bg-indigo-100 p-3 rounded-full">
-                    <i class="fas fa-shield-alt text-indigo-600 text-2xl"></i>
+    <style>
+        body { background-color: #050614; color: #ffffff; }
+        
+        /* Glass Effect */
+        .glass-card {
+            background: rgba(15, 17, 35, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Dark Input Styles */
+        input[type="text"] {
+            width: 100%;
+            background-color: #0F1123;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.875rem 1rem 0.875rem 2.5rem; /* Left padding for icon */
+            border-radius: 0.75rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+            background-color: #15172E;
+        }
+
+        /* File Upload Zone */
+        .file-drop-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            background-color: #0F1123;
+            transition: all 0.3s ease;
+        }
+        
+        .file-drop-zone:hover {
+            border-color: #7C3AED;
+            background-color: rgba(124, 58, 237, 0.05);
+        }
+
+        .file-drop-zone.has-file {
+            border-style: solid;
+            border-color: #10B981;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center py-12 px-4 relative overflow-x-hidden">
+
+    <div class="fixed top-0 left-0 w-[600px] h-[600px] bg-neonPurple/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+    <div class="fixed bottom-0 right-0 w-[600px] h-[600px] bg-neonBlue/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+
+    <div class="w-full max-w-3xl relative z-10">
+        
+        <div class="text-center mb-10">
+            <a href="/" class="inline-flex items-center gap-2 mb-4 group">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-neonPurple to-neonBlue flex items-center justify-center font-bold text-white text-2xl shadow-lg">E</div>
+            </a>
+            <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight">Identity Verification</h2>
+            <p class="text-gray-400 mt-2">Complete KYC to unlock withdrawals and higher limits.</p>
+        </div>
+
+        <div class="glass-card rounded-3xl p-8 md:p-10 relative overflow-hidden">
+            
+            <div class="absolute top-0 right-0 p-6 hidden md:block">
+                <div class="flex items-center gap-2 text-xs font-bold text-green-400 bg-green-400/10 px-3 py-1.5 rounded-full border border-green-400/20">
+                    <i class="fas fa-shield-alt"></i> 256-BIT ENCRYPTION
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 ml-3">Secure KYC Verification</h2>
             </div>
 
-            <p class="text-gray-500 text-center mb-8">Your information is encrypted and securely stored according to our privacy policy.</p>
+            <div class="md:hidden mb-6 flex justify-center">
+                <div class="flex items-center gap-2 text-xs font-bold text-green-400 bg-green-400/10 px-3 py-1.5 rounded-full border border-green-400/20">
+                    <i class="fas fa-shield-alt"></i> SECURE SERVER
+                </div>
+            </div>
 
-            <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% if form.non_field_errors %}
+                <div class="mb-8 bg-red-500/10 border border-red-500/20 p-4 rounded-xl flex gap-3 items-start">
+                    <i class="fas fa-exclamation-circle text-red-500 mt-1"></i>
+                    <div class="text-sm text-red-400">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="space-y-10">
                 {% csrf_token %}
 
-                <!-- Display non-field errors -->
-                {% if form.non_field_errors %}
-                    <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4 flex items-start">
-                        <i class="fas fa-exclamation-circle mt-0.5 mr-2"></i>
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-neonPurple flex items-center justify-center text-xs text-white">1</span>
+                        Identity Details
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            {% for error in form.non_field_errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Aadhaar Number</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500">
+                                    <i class="fas fa-fingerprint"></i>
+                                </div>
+                                <input type="text" name="aadhar_number" placeholder="XXXX XXXX XXXX" value="{{ form.aadhaar_number.value|default_if_none:'' }}">
+                            </div>
+                            {% if form.aadhaar_number.errors %}
+                                <p class="text-red-400 text-xs mt-1 pl-1">{{ form.aadhaar_number.errors.0 }}</p>
+                            {% endif %}
                         </div>
-                    </div>
-                {% endif %}
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Aadhaar Number -->
-                    <div>
-                        <label for="id_aadhaar_number" class="block text-gray-700 font-medium mb-1">Aadhaar Number</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-id-card text-gray-400"></i>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">PAN Number</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500">
+                                    <i class="fas fa-id-card"></i>
+                                </div>
+                                <input type="text" name="pan_number" placeholder="ABCDE1234F" value="{{ form.pan_number.value|default_if_none:'' }}">
                             </div>
-                            <input type="text" name="aadhar_number" id="id_aadhaar_number" class="pl-10 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="XXXX XXXX XXXX" value="{{ form.aadhaar_number.value|default_if_none:'' }}">
+                            {% if form.pan_number.errors %}
+                                <p class="text-red-400 text-xs mt-1 pl-1">{{ form.pan_number.errors.0 }}</p>
+                            {% endif %}
                         </div>
-                        {% if form.aadhaar_number.errors %}
-                            <div class="text-red-600 mt-1 text-sm">
-                                {% for error in form.aadhaar_number.errors %}
-                                    <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- PAN Number -->
-                    <div>
-                        <label for="id_pan_number" class="block text-gray-700 font-medium mb-1">PAN Number</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-address-card text-gray-400"></i>
-                            </div>
-                            <input type="text" name="pan_number" id="id_pan_number" class="pl-10 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="ABCDE1234F" value="{{ form.pan_number.value|default_if_none:'' }}">
-                        </div>
-                        {% if form.pan_number.errors %}
-                            <div class="text-red-600 mt-1 text-sm">
-                                {% for error in form.pan_number.errors %}
-                                    <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
 
-                <!-- Document Upload Section -->
-                <div class="mt-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Document Upload</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-neonBlue flex items-center justify-center text-xs text-white">2</span>
+                        Document Upload
+                    </h3>
+
+                    <div class="bg-[#0A0C16]/50 rounded-2xl p-6 border border-white/5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Aadhaar Front Image -->
-                            <div class="file-upload-container">
-                                <label for="id_aadhaar_front" class="block text-gray-700 font-medium mb-2">Aadhaar Card (Front)</label>
-                                <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-100 transition cursor-pointer group">
-                                    <input type="file" name="aadhar_front" id="id_aadhaar_front" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                    <i class="fas fa-cloud-upload-alt text-2xl text-indigo-500 mb-2 block"></i>
-                                    <span class="text-sm text-gray-500 group-hover:text-gray-700">Click to upload or drag and drop</span>
-                                    <span class="text-xs text-gray-400 block mt-1">JPG, PNG or PDF (Max 5MB)</span>
-                                </div>
-                                {% if form.aadhaar_front.errors %}
-                                    <div class="text-red-600 mt-1 text-sm">
-                                        {% for error in form.aadhaar_front.errors %}
-                                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
-                                        {% endfor %}
+                            
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-2">Aadhaar Card (Front)</label>
+                                <div class="file-drop-zone relative h-40 rounded-xl flex flex-col items-center justify-center cursor-pointer group overflow-hidden">
+                                    <input type="file" name="aadhar_front" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" onchange="previewImage(this)">
+                                    
+                                    <div class="text-center transition-opacity duration-300 group-hover:scale-105" id="placeholder">
+                                        <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3 text-neonPurple">
+                                            <i class="fas fa-cloud-upload-alt text-xl"></i>
+                                        </div>
+                                        <p class="text-xs text-gray-300 font-medium">Click to upload</p>
+                                        <p class="text-[10px] text-gray-600 mt-1">JPG, PNG (Max 5MB)</p>
                                     </div>
+
+                                    <img src="" class="absolute inset-0 w-full h-full object-cover hidden z-10 opacity-80" alt="Preview">
+                                </div>
+                                {% if form.aadhar_front.errors %}
+                                    <p class="text-red-400 text-xs mt-1">{{ form.aadhar_front.errors.0 }}</p>
                                 {% endif %}
                             </div>
 
-                            <!-- Aadhaar Back Image -->
-                            <div class="file-upload-container">
-                                <label for="id_aadhaar_back" class="block text-gray-700 font-medium mb-2">Aadhaar Card (Back)</label>
-                                <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-100 transition cursor-pointer group">
-                                    <input type="file" name="aadhar_back" id="id_aadhaar_back" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                    <i class="fas fa-cloud-upload-alt text-2xl text-indigo-500 mb-2 block"></i>
-                                    <span class="text-sm text-gray-500 group-hover:text-gray-700">Click to upload or drag and drop</span>
-                                    <span class="text-xs text-gray-400 block mt-1">JPG, PNG or PDF (Max 5MB)</span>
-                                </div>
-                                {% if form.aadhaar_back.errors %}
-                                    <div class="text-red-600 mt-1 text-sm">
-                                        {% for error in form.aadhaar_back.errors %}
-                                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
-                                        {% endfor %}
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-2">Aadhaar Card (Back)</label>
+                                <div class="file-drop-zone relative h-40 rounded-xl flex flex-col items-center justify-center cursor-pointer group overflow-hidden">
+                                    <input type="file" name="aadhar_back" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" onchange="previewImage(this)">
+                                    
+                                    <div class="text-center transition-opacity duration-300 group-hover:scale-105">
+                                        <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3 text-neonPurple">
+                                            <i class="fas fa-cloud-upload-alt text-xl"></i>
+                                        </div>
+                                        <p class="text-xs text-gray-300 font-medium">Click to upload</p>
+                                        <p class="text-[10px] text-gray-600 mt-1">JPG, PNG (Max 5MB)</p>
                                     </div>
+                                    <img src="" class="absolute inset-0 w-full h-full object-cover hidden z-10 opacity-80" alt="Preview">
+                                </div>
+                                {% if form.aadhar_back.errors %}
+                                    <p class="text-red-400 text-xs mt-1">{{ form.aadhar_back.errors.0 }}</p>
                                 {% endif %}
                             </div>
 
-                            <!-- PAN Card Front Image -->
-                            <div class="file-upload-container">
-                                <label for="id_pan_front" class="block text-gray-700 font-medium mb-2">PAN Card (Front)</label>
-                                <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-100 transition cursor-pointer group">
-                                    <input type="file" name="pan_front" id="id_pan_front" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                    <i class="fas fa-cloud-upload-alt text-2xl text-indigo-500 mb-2 block"></i>
-                                    <span class="text-sm text-gray-500 group-hover:text-gray-700">Click to upload or drag and drop</span>
-                                    <span class="text-xs text-gray-400 block mt-1">JPG, PNG or PDF (Max 5MB)</span>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-2">PAN Card (Front)</label>
+                                <div class="file-drop-zone relative h-40 rounded-xl flex flex-col items-center justify-center cursor-pointer group overflow-hidden">
+                                    <input type="file" name="pan_front" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" onchange="previewImage(this)">
+                                    
+                                    <div class="text-center transition-opacity duration-300 group-hover:scale-105">
+                                        <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3 text-blue-400">
+                                            <i class="fas fa-id-card text-xl"></i>
+                                        </div>
+                                        <p class="text-xs text-gray-300 font-medium">Click to upload</p>
+                                        <p class="text-[10px] text-gray-600 mt-1">JPG, PNG (Max 5MB)</p>
+                                    </div>
+                                    <img src="" class="absolute inset-0 w-full h-full object-cover hidden z-10 opacity-80" alt="Preview">
                                 </div>
                                 {% if form.pan_front.errors %}
-                                    <div class="text-red-600 mt-1 text-sm">
-                                        {% for error in form.pan_front.errors %}
-                                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
-                                        {% endfor %}
-                                    </div>
+                                    <p class="text-red-400 text-xs mt-1">{{ form.pan_front.errors.0 }}</p>
                                 {% endif %}
                             </div>
 
-                            <!-- PAN Card Back Image -->
-                            <div class="file-upload-container">
-                                <label for="id_pan_back" class="block text-gray-700 font-medium mb-2">PAN Card (Back)</label>
-                                <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-100 transition cursor-pointer group">
-                                    <input type="file" name="pan_back" id="id_pan_back" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                    <i class="fas fa-cloud-upload-alt text-2xl text-indigo-500 mb-2 block"></i>
-                                    <span class="text-sm text-gray-500 group-hover:text-gray-700">Click to upload or drag and drop</span>
-                                    <span class="text-xs text-gray-400 block mt-1">JPG, PNG or PDF (Max 5MB)</span>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-2">PAN Card (Back)</label>
+                                <div class="file-drop-zone relative h-40 rounded-xl flex flex-col items-center justify-center cursor-pointer group overflow-hidden">
+                                    <input type="file" name="pan_back" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" onchange="previewImage(this)">
+                                    
+                                    <div class="text-center transition-opacity duration-300 group-hover:scale-105">
+                                        <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3 text-blue-400">
+                                            <i class="fas fa-id-card text-xl"></i>
+                                        </div>
+                                        <p class="text-xs text-gray-300 font-medium">Click to upload</p>
+                                        <p class="text-[10px] text-gray-600 mt-1">JPG, PNG (Max 5MB)</p>
+                                    </div>
+                                    <img src="" class="absolute inset-0 w-full h-full object-cover hidden z-10 opacity-80" alt="Preview">
                                 </div>
                                 {% if form.pan_back.errors %}
-                                    <div class="text-red-600 mt-1 text-sm">
-                                        {% for error in form.pan_back.errors %}
-                                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
-                                        {% endfor %}
-                                    </div>
+                                    <p class="text-red-400 text-xs mt-1">{{ form.pan_back.errors.0 }}</p>
                                 {% endif %}
                             </div>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-2 text-sm text-gray-500">
-                    <i class="fas fa-lock mr-1"></i> Your data is encrypted and secure
+                <div class="flex items-start gap-3 p-4 bg-blue-500/5 rounded-lg border border-blue-500/10">
+                    <i class="fas fa-info-circle text-blue-400 mt-0.5"></i>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Your documents will be reviewed by our compliance team. This process typically takes 24-48 hours. Ensure images are clear and text is readable to avoid rejection.
+                    </p>
                 </div>
 
-                <button type="submit" class="w-full mt-6 px-4 py-3 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 focus:outline-none transition-all flex items-center justify-center font-medium">
-                    <i class="fas fa-paper-plane mr-2"></i> Submit KYC Details
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-neonPurple to-neonBlue rounded-xl font-bold text-white shadow-[0_0_20px_rgba(124,58,237,0.4)] hover:shadow-[0_0_30px_rgba(124,58,237,0.6)] transition duration-300 transform hover:-translate-y-1">
+                    Submit Verification Documents
                 </button>
-            </form>
 
-            <div class="mt-6 text-center text-sm text-gray-500">
-                Having trouble? <a href="#" class="text-indigo-600 hover:text-indigo-800">Contact support</a>
-            </div>
+            </form>
+        </div>
+
+        <div class="text-center mt-8 pb-8">
+            <a href="mailto:support@ecmarketsindia.com" class="text-xs text-gray-500 hover:text-white transition">Having trouble? Contact Support</a>
         </div>
     </div>
 
     <script>
-        // Simple file upload preview (can be expanded)
-        document.querySelectorAll('input[type="file"]').forEach(input => {
-            input.addEventListener('change', function() {
-                const container = this.closest('.file-upload-container');
-                const uploadBox = container.querySelector('.relative');
-                
-                if (this.files.length > 0) {
-                    uploadBox.classList.add('border-indigo-500', 'bg-indigo-50');
-                    const fileName = document.createElement('div');
-                    fileName.className = 'mt-2 text-xs text-indigo-600 truncate max-w-full';
-                    fileName.textContent = this.files[0].name;
-                    
-                    // Remove any previous file name
-                    const existingFileName = container.querySelector('.text-indigo-600');
-                    if (existingFileName) {
-                        existingFileName.remove();
-                    }
-                    
-                    uploadBox.appendChild(fileName);
+        function previewImage(input) {
+            const container = input.parentElement;
+            const img = container.querySelector('img');
+            const placeholder = container.querySelector('div.text-center'); // Select the div with icons/text
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    placeholder.classList.add('opacity-0'); // Fade out text
+                    container.classList.add('has-file'); // Add green border style
                 }
-            });
-        });
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
+
 </body>
 </html>

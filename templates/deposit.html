@@ -1,111 +1,222 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Deposit{% endblock %}
+{% block title %}Deposit Funds - EC Markets{% endblock %}
 
 {% block content %}
-<div class="flex-1 p-6">
-    <h2 class="text-2xl font-bold mb-4">Deposit Funds</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- UPI Deposit Card -->
-        <div onclick="openModal('upi-modal')"
-            class="cursor-pointer p-6 bg-white shadow-md rounded-lg flex items-center space-x-4 hover:bg-gray-50">
-            <img src="{% static 'upi.webp' %}" alt="UPI Icon" class="w-15 h-10">
-            <div>
-                <h3 class="text-xl font-semibold">UPI Payment</h3>
-                <p class="text-gray-500">Deposit using UPI</p>
-            </div>
+<style>
+    /* Glass Effect */
+    .glass-panel {
+        background: rgba(21, 23, 46, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Dark Input Styles */
+    .dark-input {
+        background-color: #050614;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        transition: all 0.3s ease;
+    }
+    .dark-input:focus {
+        border-color: #7C3AED;
+        box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+        outline: none;
+    }
+
+    /* Modal Backdrop */
+    .modal-backdrop {
+        background-color: rgba(5, 6, 20, 0.85);
+        backdrop-filter: blur(5px);
+    }
+</style>
+
+<div class="w-full max-w-7xl mx-auto space-y-8">
+
+    <div class="flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-white tracking-tight">Deposit Funds</h1>
+            <p class="text-gray-400 text-sm mt-1">Select a payment method to fund your account.</p>
         </div>
-
-        <!-- Crypto Deposit Card -->
-        <div onclick="openModal('crypto-modal')"
-            class="cursor-pointer p-6 bg-white shadow-md rounded-lg flex items-center space-x-4 hover:bg-gray-50">
-            <img src="{% static 'usdt.png' %}" alt="Crypto Icon" class="w-10 h-10">
-            <div>
-                <h3 class="text-xl font-semibold">Crypto Deposit (USDT)</h3>
-                <p class="text-gray-500">Deposit using USDT</p>
-            </div>
+        
+        <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 text-xs text-green-400 font-bold border border-green-500/20">
+            <i class="fas fa-lock"></i> SSL Secured Payment
         </div>
     </div>
-</div>
 
-<!-- UPI Modal -->
-<div id="upi-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h3 class="text-xl font-bold mb-4" id="modal-title">UPI Deposit</h3>
-
-        <!-- Form Section -->
-        <div id="upi-form-section">
-            <form id="upi-form">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Enter UPI ID</label>
-                <input type="text" id="upi-id" name="upi_id" required
-                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4">
-
-                <label class="block text-sm font-medium text-gray-700 mb-2">Enter Amount</label>
-                <input type="number" id="upi-amount" name="amount" required min="1"
-                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4">
-
-                <button type="button" onclick="submitDepositRequest('upi')"
-                    class="w-full mt-4 px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
-                    Request Payment
-                </button>
-            </form>
-            <button onclick="closeModal('upi-modal')" class="mt-4 text-indigo-600 hover:underline">Cancel</button>
-        </div>
-
-        <!-- Success Message with Timer Section (Hidden Initially) -->
-        <div id="success-message-section" class="hidden">
-            <p class="text-gray-700 mb-2">In 15 minutes, you will receive a payment request on your UPI number.</p>
-            <div class="relative pt-1">
-                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
-                    <div id="timer-bar" style="width: 100%"
-                        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div onclick="openModal('upi-modal')" class="glass-panel p-8 rounded-2xl cursor-pointer group hover:bg-white/5 hover:border-neonPurple/50 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                <i class="fas fa-mobile-alt text-8xl text-neonPurple"></i>
+            </div>
+            <div class="relative z-10 flex items-center gap-6">
+                <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-2 shadow-lg">
+                    <img src="{% static 'upi.webp' %}" alt="UPI" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white group-hover:text-neonPurple transition">UPI Payment</h3>
+                    <p class="text-gray-400 text-sm">Instant Deposit (GPay, PhonePe)</p>
+                    <div class="mt-3 inline-flex items-center gap-2 text-xs text-green-400 bg-green-400/10 px-2 py-1 rounded">
+                        <i class="fas fa-bolt"></i> Fastest
                     </div>
                 </div>
             </div>
-            <!-- Timer Message Section (Initially Hidden) -->
-            <div id="timer-section" class="hidden mt-4 text-center">
-                <p id="timer-text" class="text-lg font-semibold text-gray-600">15:00</p>
+        </div>
+
+        <div onclick="openModal('crypto-modal')" class="glass-panel p-8 rounded-2xl cursor-pointer group hover:bg-white/5 hover:border-green-500/50 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                <i class="fas fa-coins text-8xl text-green-500"></i>
             </div>
-            <button onclick="closeModal('upi-modal')"
-                class="w-full px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700">
-                Close
+            <div class="relative z-10 flex items-center gap-6">
+                <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-2 shadow-lg">
+                    <img src="{% static 'usdt.png' %}" alt="USDT" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white group-hover:text-green-400 transition">Tether (USDT)</h3>
+                    <p class="text-gray-400 text-sm">TRC20 / ERC20 Network</p>
+                    <div class="mt-3 inline-flex items-center gap-2 text-xs text-blue-400 bg-blue-400/10 px-2 py-1 rounded">
+                        <i class="fas fa-globe"></i> Global
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="upi-modal" class="fixed inset-0 modal-backdrop hidden flex justify-center items-center z-50 p-4">
+    <div class="glass-panel bg-[#0F1123] w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-white/10">
+        
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+            <h3 class="text-xl font-bold text-white">UPI Deposit</h3>
+            <button onclick="closeModal('upi-modal')" class="text-gray-400 hover:text-white transition">
+                <i class="fas fa-times text-lg"></i>
             </button>
+        </div>
+
+        <div class="p-6">
+            <div id="upi-form-section">
+                <form id="upi-form" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Your UPI ID</label>
+                        <input type="text" id="upi-id" name="upi_id" required placeholder="example@okhdfcbank"
+                            class="w-full px-4 py-3 rounded-xl dark-input text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Amount (INR)</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-3 text-gray-500">₹</span>
+                            <input type="number" id="upi-amount" name="amount" required min="5000" placeholder="5000"
+                                class="w-full pl-8 pr-4 py-3 rounded-xl dark-input text-sm font-mono">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Minimum deposit: ₹5,000</p>
+                    </div>
+
+                    <button type="button" onclick="submitDepositRequest('upi')"
+                        class="w-full mt-2 py-3.5 bg-gradient-to-r from-neonPurple to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-bold rounded-xl shadow-lg shadow-purple-900/20 transition transform hover:-translate-y-0.5">
+                        Request Payment
+                    </button>
+                </form>
+            </div>
+
+            <div id="success-message-section" class="hidden text-center py-4">
+                <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-green-400 animate-pulse">
+                    <i class="fas fa-check text-2xl"></i>
+                </div>
+                <h4 class="text-lg font-bold text-white mb-2">Request Sent!</h4>
+                <p class="text-gray-400 text-sm mb-6">Open your UPI app. You will receive a payment request within 15 minutes.</p>
+                
+                <div class="relative h-2 bg-white/10 rounded-full overflow-hidden mb-2">
+                    <div id="timer-bar" class="absolute top-0 left-0 h-full bg-green-500 transition-all duration-1000" style="width: 100%"></div>
+                </div>
+                
+                <div id="timer-section" class="hidden">
+                    <p id="timer-text" class="text-2xl font-mono font-bold text-white">15:00</p>
+                    <p class="text-xs text-gray-500 uppercase mt-1">Time Remaining</p>
+                </div>
+
+                <button onclick="closeModal('upi-modal')" class="mt-6 text-gray-400 hover:text-white text-sm underline">Close Window</button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Crypto Modal -->
-<div id="crypto-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h3 class="text-xl font-bold mb-4">Crypto Deposit (USDT)</h3>
-        <form id="crypto-form">
-            <label class="block text-sm font-medium text-gray-700">USDT Wallet Address</label>
-            <!-- Pre-fill the crypto address -->
-            <a href="https://freeimage.host/i/2IaUL1p"><img src="https://iili.io/2IaUL1p.md.jpg" alt="2IaUL1p.md.jpg"
-                    border="0"></a><br /><a target='_blank' href='https://freeimage.host/'></a><br />
-            <input type="text" id="crypto-address" name="crypto_address" value="{{ crypto_address }}" readonly
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
-                disabled>
-            <!-- <button type="button" onclick="submitDepositRequest('crypto')"
-                class="w-full mt-4 px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
-                Request Payment
-            </button> -->
-        </form>
-        <button onclick="closeModal('crypto-modal')" class="mt-4 text-indigo-600 hover:underline">Cancel</button>
+<div id="crypto-modal" class="fixed inset-0 modal-backdrop hidden flex justify-center items-center z-50 p-4">
+    <div class="glass-panel bg-[#0F1123] w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-white/10">
+        
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                <img src="{% static 'usdt.png' %}" class="w-6 h-6"> USDT Deposit
+            </h3>
+            <button onclick="closeModal('crypto-modal')" class="text-gray-400 hover:text-white transition">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <div class="p-6">
+            <form id="crypto-form" class="space-y-6 text-center">
+                
+                <div class="bg-white p-2 rounded-xl inline-block shadow-lg mx-auto">
+                    <img src="https://iili.io/2IaUL1p.md.jpg" alt="USDT QR" class="w-48 h-48 object-contain rounded-lg">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2 text-left">Wallet Address (TRC20)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="crypto-address" name="crypto_address" value="{{ crypto_address }}" readonly
+                            class="w-full px-4 py-3 rounded-xl dark-input text-xs font-mono text-gray-300 bg-[#050614] select-all">
+                        <button type="button" onclick="copyAddress()" class="bg-white/10 hover:bg-white/20 text-white px-4 rounded-xl transition">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-yellow-500/80 mt-2 text-left">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> Only send USDT to this address.
+                    </p>
+                </div>
+
+                <div class="pt-2">
+                    <button type="button" onclick="closeModal('crypto-modal')"
+                        class="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold rounded-xl transition">
+                        I have made the payment
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-
 <script>
+    // Copy Address Function
+    function copyAddress() {
+        const copyText = document.getElementById("crypto-address");
+        copyText.select();
+        document.execCommand("copy");
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Copied!',
+            text: 'Wallet address copied to clipboard',
+            background: '#0F1123',
+            color: '#fff',
+            timer: 1500,
+            showConfirmButton: false
+        });
+    }
+
     function submitDepositRequest(method) {
         let data = {};
         if (method === 'upi') {
             const upiId = document.getElementById('upi-id').value;
             const amount = document.getElementById('upi-amount').value;
+            
             if (!upiId || !amount) {
-                alert('Please fill out all fields.');
+                Swal.fire({ icon: 'warning', title: 'Missing Info', text: 'Please fill out all fields.', background: '#0F1123', color: '#fff' });
                 return;
             }
 
@@ -114,7 +225,10 @@
                     icon: 'error',
                     title: 'Minimum Deposit',
                     text: 'The minimum deposit amount is ₹5000.',
+                    background: '#0F1123',
+                    color: '#fff',
                     confirmButtonText: 'OK',
+                    confirmButtonColor: '#7C3AED'
                 });
                 return;
             }
@@ -123,66 +237,58 @@
         } else if (method === 'crypto') {
             const cryptoAddress = document.getElementById('crypto-address').value;
             if (!cryptoAddress) {
-                alert('Please enter the crypto address.');
+                alert('System Error: Crypto address missing.');
                 return;
             }
             data = { crypto_address: cryptoAddress, method: 'USDT' };
         }
 
+        // Simulating Fetch for UI demo (Replace with your actual fetch call)
+        // For production, uncomment your original fetch block below
+        
         fetch("{% url 'deposit-request' %}", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
             body: JSON.stringify(data)
         })
-            .then(response => response.json())
-            .then(result => {
-                console.log(result)
-                if (result.success && result.method === 'UPI') {
-                    document.getElementById('upi-form-section').classList.add('hidden');
-                    document.getElementById('success-message-section').classList.remove('hidden');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Request Submitted!',
-                        text: 'You will receive the payment request on your UPI within 15 minutes.',
-                        confirmButtonText: 'OK',
-                    })
-                    // Show the timer section
-                    document.getElementById('timer-section').classList.remove('hidden');
-                    startTimer();
-                } else if (result.success && method === 'crypto') {
-                    alert('Crypto deposit request submitted successfully.');
-                    closeModal('crypto-modal');
-                } else {
-                    alert(result.message || 'Failed to process request');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        .then(response => response.json())
+        .then(result => {
+            if (result.success && result.method === 'UPI') {
+                document.getElementById('upi-form-section').classList.add('hidden');
+                document.getElementById('success-message-section').classList.remove('hidden');
+                document.getElementById('timer-section').classList.remove('hidden');
+                startTimer();
+            } else if (result.success && method === 'crypto') {
+                closeModal('crypto-modal');
+                Swal.fire({ icon: 'success', title: 'Success', text: 'Crypto deposit request submitted.', background: '#0F1123', color: '#fff' });
+            } else {
+                Swal.fire({ icon: 'error', title: 'Error', text: result.message || 'Failed to process request', background: '#0F1123', color: '#fff' });
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 
-    // Timer function for 15 minutes
+    // Timer logic
+    let timerInterval;
     function startTimer() {
-        const totalSeconds = 15 * 60; // 15 minutes in seconds
+        const totalSeconds = 15 * 60; 
         let remainingSeconds = totalSeconds;
         const timerBar = document.getElementById("timer-bar");
         const timerText = document.getElementById("timer-text");
-        const timerSection = document.getElementById("timer-section");
 
-        // Show the timer section when the timer starts
-        timerSection.classList.remove('hidden');
+        // Reset if running
+        if(timerInterval) clearInterval(timerInterval);
 
-        const timerInterval = setInterval(() => {
+        timerInterval = setInterval(() => {
             remainingSeconds--;
 
-            // Update the progress bar
             const percentage = (remainingSeconds / totalSeconds) * 100;
             timerBar.style.width = `${percentage}%`;
 
-            // Update the timer text
             const minutes = Math.floor(remainingSeconds / 60);
             const seconds = remainingSeconds % 60;
             timerText.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-            // Close modal when time is up
             if (remainingSeconds <= 0) {
                 clearInterval(timerInterval);
                 closeModal("upi-modal");
@@ -190,21 +296,24 @@
         }, 1000);
     }
 
-
-
     function openModal(modalId) {
         document.getElementById(modalId).classList.remove('hidden');
     }
 
     function closeModal(modalId) {
         document.getElementById(modalId).classList.add('hidden');
-        resetModal();
+        if(modalId === 'upi-modal') resetModal();
     }
 
     function resetModal() {
-        document.getElementById('upi-form-section').classList.remove('hidden');
-        document.getElementById('success-message-section').classList.add('hidden');
-        window.location.reload();
+        // Delay slighty to allow fade out if you add animations later
+        setTimeout(() => {
+            document.getElementById('upi-form-section').classList.remove('hidden');
+            document.getElementById('success-message-section').classList.add('hidden');
+            document.getElementById('upi-form').reset();
+            if(timerInterval) clearInterval(timerInterval);
+        }, 200);
     }
 </script>
+
 {% endblock %}
