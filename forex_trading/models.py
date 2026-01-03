@@ -159,6 +159,9 @@ class Trade(models.Model):
         ('USDJPY', 'USD/JPY'),
         ('AUDUSD', 'AUD/USD'),
         ('USDCAD', 'USD/CAD'),
+        ('BTCUSD', 'BTC/USD'),
+        ('ETHUSD', 'ETH/USD'),
+
     ]
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # User making the trade
