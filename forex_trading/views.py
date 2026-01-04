@@ -30,6 +30,14 @@ from .settings import EMAIL_HOST_USER
 class HomePage(TemplateView):
     template_name = 'landingpage/index.html'
 
+class AboutPage(TemplateView):
+    template_name = "about.html"
+
+class HelpPage(TemplateView):
+    template_name = "help_center.html"
+
+class ContactPage(TemplateView):
+    template_name = "contact.html"
 
 class SignupView(FormView):
     template_name = 'signup.html'

@@ -90,8 +90,8 @@
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition">Markets</a>
-                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition">Algo Trading</a>
-                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition">Platforms</a>
+                    <a href="#algo" class="text-sm font-medium text-gray-400 hover:text-white transition">Algo Trading</a>
+                    <a href="#trade" class="text-sm font-medium text-gray-400 hover:text-white transition">Platforms</a>
                 </div>
                 <div class="flex items-center gap-4">
                     <a href="{% url 'login' %}" class="text-sm font-medium text-white hover:text-neonPurple">Log In</a>
@@ -230,7 +230,7 @@
         </div>
     </section>
 
-    <section class="py-24 relative overflow-hidden">
+    <section class="py-24 relative overflow-hidden" id="trade">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 
@@ -328,7 +328,7 @@
         </div>
     </section>
 
-    <section class="py-24 bg-[#080911] border-y border-white/5">
+    <section class="py-24 bg-[#080911] border-y border-white/5" id="algo">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 
@@ -427,89 +427,6 @@
         </div>
     </section>
 
-    <footer class="bg-[#050614] border-t border-white/10 pt-16 pb-8 text-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
-                
-                <div class="lg:col-span-2">
-                    <div class="flex items-center gap-2 mb-6">
-                        <div class="w-8 h-8 rounded bg-gradient-to-tr from-neonPurple to-blue-600 flex items-center justify-center font-bold text-white">E</div>
-                        <span class="text-xl font-bold tracking-tight text-white">EC Markets India</span>
-                    </div>
-                    <div class="text-gray-400 space-y-4">
-                        <p>
-                            66 Guild Street 512B,<br>
-                            Great North Town.
-                        </p>
-                        <a href="mailto:support@ecmarketsindia.com" class="block text-white hover:text-neonPurple transition">
-                            support@ecmarketsindia.com
-                        </a>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-white font-bold mb-6">Overview</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#" class="hover:text-neonPurple transition">Markets</a></li>
-                        <li><a href="#" class="hover:text-neonPurple transition">Education</a></li>
-                        <li><a href="#" class="hover:text-neonPurple transition">Customers</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-white font-bold mb-6">Company</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#" class="hover:text-neonPurple transition">About</a></li>
-                        <li><a href="#" class="hover:text-neonPurple transition">Blog</a></li>
-                        <li><a href="#" class="hover:text-neonPurple transition">Careers</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-white font-bold mb-6">Legal & Support</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#" class="hover:text-neonPurple transition">Help Center</a></li>
-                        <li><a href="#" class="hover:text-neonPurple transition">Legal Docs</a></li>
-                        <li><a href="#" class="hover:text-neonPurple transition">Contact</a></li>
-                        <li><a href="#" class="hover:text-neonPurple transition">Documentation</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="mb-12">
-                <div class="flex items-center gap-2 mb-2">
-                    <i class="fas fa-exclamation-triangle text-neonRed"></i>
-                    <h5 class="text-white font-bold">Risk warning</h5>
-                </div>
-                <p class="text-gray-500 text-xs leading-relaxed max-w-4xl">
-                    An investor may also get returned much less than the amount invested. Information on beyond performance, wherein given, isn't always always a manual to destiny performance. The capital price of gadgets withinside the fund can differ and the rate of gadgets can cross down in addition to up and isn't always guaranteed.
-                </p>
-            </div>
-
-            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="text-gray-500 text-xs">
-                    &copy; Copyright EC Markets 2026. All Rights Reserved.
-                </div>
-                
-                <div class="flex gap-4">
-                    <a href="#" class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                </div>
-            </div>
-
-        </div>
-    </footer>
-
+    {% include 'footer.html' %}
 </body>
 </html>

@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - EC Markets</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepBlue: '#050614',       
+                        cardBlue: '#0F1123',       
+                        neonPurple: '#7C3AED',     
+                        neonBlue: '#3B82F6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #050614; color: #ffffff; }
+        
+        /* Glass Effect */
+        .glass-card {
+            background: rgba(15, 17, 35, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Form Inputs */
+        input, textarea, select {
+            background-color: #0F1123 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 0.5rem !important;
+            width: 100%;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #7C3AED !important;
+            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+        }
+
+        /* FAQ Accordion Transition */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden pt-20">
+
+    {% include 'navbar.html' %}
+
+    <section class="relative pt-20 pb-20 overflow-hidden text-center">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-neonBlue/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+
+        <div class="max-w-3xl mx-auto px-4 relative z-10">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">How can we help you?</h1>
+            
+            <div class="relative max-w-lg mx-auto">
+                <input type="text" placeholder="Search for articles, guides, or troubleshooting..." class="pl-12 py-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-md focus:bg-[#0F1123] transition shadow-lg text-white">
+                <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a href="#" class="glass-card p-6 rounded-2xl hover:bg-white/10 transition group text-center block">
+                <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mx-auto mb-4 text-purple-400 group-hover:scale-110 transition">
+                    <i class="fas fa-user-circle text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-white mb-1">Account Settings</h3>
+                <p class="text-sm text-gray-400">Verification, Profile, Security</p>
+            </a>
+            <a href="#" class="glass-card p-6 rounded-2xl hover:bg-white/10 transition group text-center block">
+                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-4 text-blue-400 group-hover:scale-110 transition">
+                    <i class="fas fa-wallet text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-white mb-1">Deposits & Withdrawals</h3>
+                <p class="text-sm text-gray-400">Payment methods, Limits, Fees</p>
+            </a>
+            <a href="#" class="glass-card p-6 rounded-2xl hover:bg-white/10 transition group text-center block">
+                <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mx-auto mb-4 text-green-400 group-hover:scale-110 transition">
+                    <i class="fas fa-chart-line text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-white mb-1">Trading Platform</h3>
+                <p class="text-sm text-gray-400">Charts, Orders, Execution</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            
+            <div>
+                <h2 class="text-2xl font-bold mb-8 text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <div class="glass-card rounded-xl overflow-hidden faq-item cursor-pointer" onclick="toggleFaq(this)">
+                        <div class="p-4 flex justify-between items-center">
+                            <span class="font-medium text-gray-200">How long do withdrawals take?</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform faq-icon"></i>
+                        </div>
+                        <div class="faq-answer px-4 pb-4 text-sm text-gray-400">
+                            Withdrawals are typically processed within 24 hours. Bank transfers may take 1-3 business days depending on your local bank.
+                        </div>
+                    </div>
+                    <div class="glass-card rounded-xl overflow-hidden faq-item cursor-pointer" onclick="toggleFaq(this)">
+                        <div class="p-4 flex justify-between items-center">
+                            <span class="font-medium text-gray-200">Is my money safe?</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform faq-icon"></i>
+                        </div>
+                        <div class="faq-answer px-4 pb-4 text-sm text-gray-400">
+                            Yes. We store 98% of digital assets in cold storage. Our platform uses 256-bit encryption and supports 2FA for all accounts.
+                        </div>
+                    </div>
+                    <div class="glass-card rounded-xl overflow-hidden faq-item cursor-pointer" onclick="toggleFaq(this)">
+                        <div class="p-4 flex justify-between items-center">
+                            <span class="font-medium text-gray-200">What documents do I need for KYC?</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform faq-icon"></i>
+                        </div>
+                        <div class="faq-answer px-4 pb-4 text-sm text-gray-400">
+                            You need a valid Government ID (Passport, Driving License, or National ID) and a Proof of Address (Utility Bill or Bank Statement).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-neonPurple/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+
+                <h2 class="text-2xl font-bold mb-2 text-white">Still need help?</h2>
+                <p class="text-gray-400 mb-8 text-sm">Fill out the form below and we will open your email app with the details pre-filled.</p>
+
+                <form id="contactForm" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Your Name</label>
+                        <input type="text" id="name" placeholder="John Doe" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Email Address</label>
+                        <input type="email" id="email" placeholder="john@example.com" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Subject</label>
+                        <select id="subject" class="appearance-none cursor-pointer">
+                            <option value="General Inquiry" class="bg-[#0F1123]">General Inquiry</option>
+                            <option value="Technical Support" class="bg-[#0F1123]">Technical Support</option>
+                            <option value="Billing / Withdrawal" class="bg-[#0F1123]">Billing / Withdrawal</option>
+                            <option value="Verification Issue" class="bg-[#0F1123]">Verification Issue</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Message</label>
+                        <textarea id="message" rows="4" placeholder="Describe your issue..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-neonPurple to-neonBlue rounded-xl font-bold text-white shadow-lg hover:shadow-neonPurple/30 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Open Mail App
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <script>
+        // 1. Handle FAQ Accordion
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+        }
+
+        // 2. Handle Contact Form -> Mailto
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            // Construct Email Body
+            const emailBody = `Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0AMessage:%0D%0A${message}`;
+            const recipient = "support@ecmarketsindia.com";
+            
+            // Open Mail App
+            window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
+        });
+    </script>
+
+</body>
+</html>

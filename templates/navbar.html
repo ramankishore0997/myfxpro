@@ -1,0 +1,23 @@
+<nav class="fixed w-full z-50 top-0 left-0 bg-[#050614]/90 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <a href="/" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded bg-gradient-to-tr from-neonPurple to-blue-600 flex items-center justify-center font-bold text-white shadow-lg group-hover:scale-110 transition">
+                    E
+                </div>
+                <span class="text-xl font-bold tracking-tight text-white">EC Markets</span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition">Markets</a>
+                <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition">Algo Trading</a>
+                <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition">Platforms</a>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <a href="{% url 'login' %}" class="text-sm font-medium text-white hover:text-neonPurple transition">Log In</a>
+                <a href="{% url 'signup' %}" class="bg-neonPurple hover:bg-purple-600 px-5 py-2 rounded-lg text-sm font-bold transition shadow-[0_0_15px_rgba(124,58,237,0.4)]">Register</a>
+            </div>
+        </div>
+    </div>
+</nav>

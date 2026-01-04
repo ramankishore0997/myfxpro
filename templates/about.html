@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - EC Markets</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepBlue: '#050614',       
+                        cardBlue: '#0F1123',       
+                        neonPurple: '#7C3AED',     
+                        neonGreen: '#10B981',       
+                        neonBlue: '#3B82F6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #050614; color: #ffffff; }
+        
+        /* Glass Effect */
+        .glass-card {
+            background: rgba(15, 17, 35, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #7C3AED, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden pt-20"> {% include 'navbar.html' %}
+
+    <section class="relative pt-20 pb-20 overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-neonPurple/20 rounded-full blur-[120px] -z-10 opacity-50"></div>
+
+        <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+            <span class="text-neonPurple font-mono text-sm uppercase tracking-wider">Our Story</span>
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mt-4 mb-6">
+                Building the Future of <br>
+                <span class="text-gradient">Decentralized Trading.</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-lg text-gray-400 leading-relaxed">
+                EC Markets was founded with a simple mission: to make professional-grade trading infrastructure accessible to everyone, everywhere.
+            </p>
+        </div>
+    </section>
+
+    <div class="border-y border-white/5 bg-white/5 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold text-white mb-1">2018</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-widest">Founded</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-white mb-1">150+</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-widest">Countries</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-white mb-1">$50B+</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-widest">Quarterly Volume</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-white mb-1">2M+</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-widest">Verified Users</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">What Drives Us?</h2>
+                <p class="text-gray-400">Our core values define how we build and serve our community.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-3xl hover:bg-white/5 transition duration-500 group border border-white/5 hover:border-neonPurple/50">
+                    <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6 text-blue-400 text-2xl group-hover:scale-110 transition">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Security First</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        We use bank-grade cold storage and multi-signature wallets to ensure your assets are never compromised.
+                    </p>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl hover:bg-white/5 transition duration-500 group border border-white/5 hover:border-neonPurple/50">
+                    <div class="w-14 h-14 bg-purple-500/20 rounded-2xl flex items-center justify-center mb-6 text-neonPurple text-2xl group-hover:scale-110 transition">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Lightning Fast</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Our matching engine processes 100,000 transactions per second with less than 5ms latency.
+                    </p>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl hover:bg-white/5 transition duration-500 group border border-white/5 hover:border-neonPurple/50">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-2xl flex items-center justify-center mb-6 text-neonGreen text-2xl group-hover:scale-110 transition">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Community Driven</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        We listen to our traders. 80% of our new features come directly from user feedback and voting.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#080911] border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-16">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Meet the Team</h2>
+                    <p class="text-gray-400">The minds behind the technology.</p>
+                </div>
+                <a href="#" class="text-neonPurple hover:text-white transition font-medium hidden md:block">Join our team →</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-2xl mb-4 aspect-[4/5] bg-white/5 flex items-center justify-center border border-white/5">
+                        <i class="fas fa-user text-6xl text-gray-700"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Alex Morgan</h3>
+                    <p class="text-neonPurple text-xs uppercase tracking-wider font-bold">CEO & Founder</p>
+                </div>
+
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-2xl mb-4 aspect-[4/5] bg-white/5 flex items-center justify-center border border-white/5">
+                        <i class="fas fa-user text-6xl text-gray-700"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Sarah Jenkins</h3>
+                    <p class="text-blue-400 text-xs uppercase tracking-wider font-bold">CTO</p>
+                </div>
+
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-2xl mb-4 aspect-[4/5] bg-white/5 flex items-center justify-center border border-white/5">
+                        <i class="fas fa-user text-6xl text-gray-700"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">David Chen</h3>
+                    <p class="text-gray-400 text-xs uppercase tracking-wider font-bold">Head of Product</p>
+                </div>
+
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-2xl mb-4 aspect-[4/5] bg-white/5 flex items-center justify-center border border-white/5">
+                        <i class="fas fa-user text-6xl text-gray-700"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Emily Ross</h3>
+                    <p class="text-gray-400 text-xs uppercase tracking-wider font-bold">VP of Marketing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include 'footer.html' %}
+
+</body>
+</html>
