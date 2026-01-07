@@ -16,7 +16,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic.edit import CreateView
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
 from django.core.mail import send_mail, EmailMessage
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -278,31 +278,63 @@ class UserTradesView(TemplateView):
 
         # Get the 'date_filter' parameter from the request
         date_filter = self.request.GET.get('date_filter', 'today')
+        start_date_str = self.request.GET.get('start_date')
+        end_date_str = self.request.GET.get('end_date')
         print("Trade user group ", self.request.user.trade_group.all()[0])
+
+        trades_queryset = Trade.objects.filter(trade_group__in=self.request.user.trade_group.all())
+        trades = trades_queryset.none()
+
         # Default: Show all trades if no filter is selected
         if date_filter == 'today':
             # Filter trades that occurred today
             start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
             # trades = Trade.objects.filter(user=self.request.user, trade_time__gte=start_of_day)
-            trades = Trade.objects.filter(trade_time__gte=start_of_day, trade_group__in=self.request.user.trade_group.all())
+            trades = trades_queryset.filter(trade_time__gte=start_of_day)
 
         elif date_filter == 'yesterday':
             # Filter trades that occurred yesterday
             start_of_yesterday = (now - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
             end_of_yesterday = (now - timedelta(days=1)).replace(hour=23, minute=59, second=59, microsecond=999999)
             # trades = Trade.objects.filter(user=self.request.user, trade_time__range=[start_of_yesterday, end_of_yesterday])
-            trades = Trade.objects.filter(trade_group__in=self.request.user.trade_group.all(), trade_time__range=[start_of_yesterday, end_of_yesterday])
+            trades = trades_queryset.filter(trade_time__range=[start_of_yesterday, end_of_yesterday])
 
         elif date_filter == '7_days':
             # Filter trades that occurred in the last 7 days
             start_of_7_days_ago = now - timedelta(days=7)
             # trades = Trade.objects.filter(user=self.request.user, trade_time__gte=start_of_7_days_ago)
-            trades = Trade.objects.filter(trade_group__in=self.request.user.trade_group.all(), user=self.request.user, trade_time__gte=start_of_7_days_ago)
+            trades = trades_queryset.filter(user=self.request.user, trade_time__gte=start_of_7_days_ago)
+
+        elif date_filter == '30_days':
+            start_of_30_days_ago = now - timedelta(days=30)
+            trades = trades_queryset.filter(user=self.request.user, trade_time__gte=start_of_30_days_ago)
+
+        elif date_filter == '6_months':
+            start_of_6_months_ago = now - timedelta(days=182)
+            trades = trades_queryset.filter(user=self.request.user, trade_time__gte=start_of_6_months_ago)
+
+        elif date_filter == '1_year':
+            start_of_1_year_ago = now - timedelta(days=365)
+            trades = trades_queryset.filter(user=self.request.user, trade_time__gte=start_of_1_year_ago)
+
+        elif date_filter == 'custom' and start_date_str and end_date_str:
+            try:
+                start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+                end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
+
+                if end_date < start_date:
+                    start_date, end_date = end_date, start_date
+
+                start_datetime = timezone.make_aware(datetime.combine(start_date, datetime.min.time()))
+                end_datetime = timezone.make_aware(datetime.combine(end_date, datetime.max.time()))
+                trades = trades_queryset.filter(user=self.request.user, trade_time__range=[start_datetime, end_datetime])
+            except ValueError:
+                trades = trades_queryset.none()
 
         else:
             # Default: Show today's trades if no filter is selected
             start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
-            trades = Trade.objects.filter(user=self.request.user, trade_time__gte=start_of_day)
+            trades = trades_queryset.filter(user=self.request.user, trade_time__gte=start_of_day)
 
         # Calculate the total profit from the filtered trades
         total_profit = sum(trade.profit for trade in trades)
@@ -310,6 +342,8 @@ class UserTradesView(TemplateView):
 
         context['trades'] = trades
         context['date_filter'] = date_filter  # To pass selected filter value to the template
+        context['start_date'] = start_date_str
+        context['end_date'] = end_date_str
         return context
 
 

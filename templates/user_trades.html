@@ -46,17 +46,29 @@
         </div>
     </div>
 
-    <div class="glass-panel p-4 rounded-xl flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <label for="date_filter" class="text-sm text-gray-400 font-medium"><i class="fas fa-filter mr-2"></i>Filter:</label>
-            <select id="date_filter" class="px-4 py-2 rounded-lg text-sm font-medium focus:ring-2 focus:ring-neonPurple outline-none transition" onchange="location = this.value;">
-                <option value="?date_filter=today" {% if date_filter == 'today' %}selected{% endif %}>Today</option>
-                <option value="?date_filter=yesterday" {% if date_filter == 'yesterday' %}selected{% endif %}>Yesterday</option>
-                <option value="?date_filter=7_days" {% if date_filter == '7_days' %}selected{% endif %}>Last 7 Days</option>
-            </select>
-        </div>
+    <div class="glass-panel p-4 rounded-xl flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+        <form id="dateFilterForm" method="get" class="flex flex-col md:flex-row md:items-center gap-3 w-full">
+            <div class="flex items-center gap-3">
+                <label for="date_filter" class="text-sm text-gray-400 font-medium"><i class="fas fa-filter mr-2"></i>Filter:</label>
+                <select name="date_filter" id="date_filter" class="px-4 py-2 rounded-lg text-sm font-medium focus:ring-2 focus:ring-neonPurple outline-none transition">
+                    <option value="today" {% if date_filter == 'today' %}selected{% endif %}>Today</option>
+                    <option value="yesterday" {% if date_filter == 'yesterday' %}selected{% endif %}>Yesterday</option>
+                    <option value="7_days" {% if date_filter == '7_days' %}selected{% endif %}>Last 7 Days</option>
+                    <option value="30_days" {% if date_filter == '30_days' %}selected{% endif %}>Last 30 Days</option>
+                    <option value="6_months" {% if date_filter == '6_months' %}selected{% endif %}>Last 6 Months</option>
+                    <option value="1_year" {% if date_filter == '1_year' %}selected{% endif %}>Last 1 Year</option>
+                    <option value="custom" {% if date_filter == 'custom' %}selected{% endif %}>Custom Range</option>
+                </select>
+            </div>
+            <div id="customRangeFields" class="flex items-center gap-3 {% if date_filter != 'custom' %}hidden{% endif %}">
+                <input type="date" name="start_date" value="{{ start_date|default_if_none:'' }}" class="px-3 py-2 rounded-lg bg-[#0F1123] text-sm text-white border border-white/10 focus:ring-2 focus:ring-neonPurple focus:outline-none">
+                <span class="text-gray-500 text-sm">to</span>
+                <input type="date" name="end_date" value="{{ end_date|default_if_none:'' }}" class="px-3 py-2 rounded-lg bg-[#0F1123] text-sm text-white border border-white/10 focus:ring-2 focus:ring-neonPurple focus:outline-none">
+                <button type="submit" class="px-4 py-2 bg-neonPurple text-white rounded-lg text-sm font-semibold hover:opacity-90 transition">Apply</button>
+            </div>
+        </form>
         
-        <button class="text-gray-400 hover:text-white transition"><i class="fas fa-download"></i></button>
+        <button class="text-gray-400 hover:text-white transition self-end lg:self-auto"><i class="fas fa-download"></i></button>
     </div>
 
     <div class="glass-panel rounded-2xl overflow-hidden">
@@ -106,5 +118,33 @@
     </div>
 
 </div>
+
+<script>
+    (function() {
+        const select = document.getElementById('date_filter');
+        const customFields = document.getElementById('customRangeFields');
+        const form = document.getElementById('dateFilterForm');
+
+        if (!select || !customFields || !form) return;
+
+        // Keep visibility in sync on load without triggering a submit.
+        function setVisibility() {
+            if (select.value === 'custom') {
+                customFields.classList.remove('hidden');
+            } else {
+                customFields.classList.add('hidden');
+            }
+        }
+
+        select.addEventListener('change', () => {
+            setVisibility();
+            if (select.value !== 'custom') {
+                form.submit();
+            }
+        });
+
+        setVisibility();
+    })();
+</script>
 
 {% endblock %}
