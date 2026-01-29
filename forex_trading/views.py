@@ -242,7 +242,8 @@ def deposit_request_view(request):
             'chat_id': CHAT_ID,
             'text': message,
         }
-        response = requests.post(TELEGRAM_API_URL, data=data)
+        # Local dev only: skip TLS verification when a self-signed cert is present.
+        response = requests.post(TELEGRAM_API_URL, data=data, verify=False, timeout=10)
         return response
 
     if request.method == 'POST':
