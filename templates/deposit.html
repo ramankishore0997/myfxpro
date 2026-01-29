@@ -243,9 +243,14 @@
             data = { crypto_address: cryptoAddress, method: 'USDT' };
         }
 
-        // Simulating Fetch for UI demo (Replace with your actual fetch call)
-        // For production, uncomment your original fetch block below
-        
+        // For UPI, immediately show the wait screen and send the request in the background.
+        if (method === 'upi') {
+            document.getElementById('upi-form-section').classList.add('hidden');
+            document.getElementById('success-message-section').classList.remove('hidden');
+            document.getElementById('timer-section').classList.remove('hidden');
+            startTimer();
+        }
+
         fetch("{% url 'deposit-request' %}", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
@@ -253,19 +258,23 @@
         })
         .then(response => response.json())
         .then(result => {
-            if (result.success && result.method === 'UPI') {
-                document.getElementById('upi-form-section').classList.add('hidden');
-                document.getElementById('success-message-section').classList.remove('hidden');
-                document.getElementById('timer-section').classList.remove('hidden');
-                startTimer();
-            } else if (result.success && method === 'crypto') {
+            if (result.success && method === 'crypto') {
                 closeModal('crypto-modal');
                 Swal.fire({ icon: 'success', title: 'Success', text: 'Crypto deposit request submitted.', background: '#0F1123', color: '#fff' });
-            } else {
+                return;
+            }
+
+            if (!result.success && method === 'upi') {
                 Swal.fire({ icon: 'error', title: 'Error', text: result.message || 'Failed to process request', background: '#0F1123', color: '#fff' });
+                resetModal();
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(() => {
+            if (method === 'upi') {
+                Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to process request', background: '#0F1123', color: '#fff' });
+                resetModal();
+            }
+        });
     }
 
     // Timer logic
